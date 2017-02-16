@@ -19,7 +19,7 @@ If [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), th
 
     ```elixir
     def deps do
-      [{:rummage_phoenix, "~> 0.1.0"}]
+      [{:rummage_phoenix, "~> 0.5.0"}]
     end
     ```
 
