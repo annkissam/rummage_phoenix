@@ -70,8 +70,4 @@ If [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), th
 
   - Test with params:
 
-  [![after pagination](https://github.com/Excipients/rummage_phoenix/tree/master/src/images/rummage_ecto_paginate.png "Pagination")]
-  ![custom paginated params](https://github.com/Excipients/rummage_phoenix/tree/master/src/images/custom_paginated_params.png "Custom Paginated Params")
-  ![custom paginated page](https://github.com/Excipients/rummage_phoenix/tree/master/src/images/custom_paginated_page.png "Custom Paginated Page")
-
-
+  ![after pagination](src/images/rummage_ecto_paginate.png)
