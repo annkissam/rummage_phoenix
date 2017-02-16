@@ -44,7 +44,7 @@ end
   defp deps do
     [
       {:phoenix, "~> 1.2.1"},
-      {:rummage_ecto, "~> 0.5.0", optional: true},
+      {:rummage_ecto, "~> 0.5.0"},
       {:ex_doc, ">= 0.0.0", only: :dev},
     ]
   end
