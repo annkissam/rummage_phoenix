@@ -1,7 +1,7 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "0.5.0"
+  @version "0.6.0"
   @url "https://github.com/Excipients/rummage_phoenix"
 
   def project do
@@ -44,7 +44,7 @@ end
   defp deps do
     [
       {:phoenix, "~> 1.2.1"},
-      {:rummage_ecto, "~> 0.5.0"},
+      {:rummage_ecto, "~> 0.6.0"},
       {:ex_doc, ">= 0.0.0", only: :dev},
     ]
   end

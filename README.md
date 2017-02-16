@@ -24,7 +24,7 @@ This is [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html
     ```elixir
     def deps do
       [
-        {:rummage_phoenix, "~> 0.5.0"}
+        {:rummage_phoenix, "~> 0.6.0"}
       ]
     end
     ```
@@ -36,7 +36,7 @@ This is **NOT** the preferred way to set `per_page` as it might lead to conflict
 do it per model as show below in the [Initial Setup](#initial-setup) section. If you wanna set per_page
 for all the models, add it to `model` function in `web.ex`
 
-  - Add `rummage_phoenix` to your list of dependencies in `mix.exs`:
+  - Add `rummage_phoenix` config to your list of configs in `dev.exs`:
 
     ```elixir
     config :rummage_phoenix,
@@ -62,7 +62,7 @@ Search, Sort and Paginate in Phoenix!
   ```elixir
   defmodule MyApp.Product do
     use MyApp.Web, :model
-    use Rummage.Ecto, repo: MyApp.Repo, per_page: 5 # <-- You don't have to pass per_page if you have set it in the config.exs
+    use Rummage.Ecto, repo: MyApp.Repo, per_page: 5 # <-- You don't have to pass per_page if you have set it in the config.exs, but this way is preferred over setting it up in config file.
 
     # More code below....
   end
