@@ -49,6 +49,10 @@ for all the models, add it to `model` function in `web.ex`
 
 #### Video coming up soon.........
 
+Search, Sort and Paginate in Phoenix!
+
+![phoenix all together](src/images/all_together.png)
+
 ## Usage
 
 ### Initial Setup
