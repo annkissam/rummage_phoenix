@@ -1,20 +1,23 @@
 # Rummage.Phoenix
 
-`Rummage.Phoenix` is a support framework for Phoenix that can be used to manipulate Phoenix collections and Ecto
+`Rummage.Phoenix` is a support framework for `Phoenix` that can be used to manipulate `Phoenix` collections and `Ecto`
 models with Search, Sort and Paginate operations.
 
 It accomplishes the above operations by using `Rummage.Ecto`, to paginate `Ecto` queries and adds Phoenix and HTML
 support to views and controllers. For information on how to configure `Rummage.Ecto` visit
 [this](/Users/adiiyengar/Excipients/rummage_ecto) page.
 
-**NOTE: Rummage is not like Ransack, and doesn't intend to be either. It doesn't add functions based on search params.
-If you'd like to have that for a model, you can always configure Rummage to use your Search module for that model. This
+The best part about rummage is that all the three operations: `Search`, `Sort` and `Paginate` integrate seamlessly and
+can be configured separately. To check out their seamless integration, please check the information below.
+
+**NOTE: `Rummage` is not like `Ransack`, and doesn't intend to be either. It doesn't add functions based on search params.
+If you'd like to have that for a model, you can always configure `Rummage` to use your `Search` module for that model. This
 is why Rummage has been made configurable.**
 
 
 ## Installation
 
-If [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), the package can be installed as:
+This is [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), the package can be installed as:
 
   - Add `rummage_phoenix` to your list of dependencies in `mix.exs`:
 
@@ -26,23 +29,42 @@ If [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), th
     end
     ```
 
+## Configuration (Optional, Not the preferred way to set `per_page`)
+
+`Rumamge.Phoenix` can be configured globally with a `per_page` value (which can be overriden for a model).
+This is **NOT** the preferred way to set `per_page` as it might lead to conflicts. It is recommended to
+do it per model as show below in the [Initial Setup](#Initial Setup) section. If you wanna set per_page
+for all the models, add it to `model` function in `web.ex`
+
+  - Add `rummage_phoenix` to your list of dependencies in `mix.exs`:
+
+    ```elixir
+    config :rummage_phoenix,
+      Rummage.Phoenix,
+      per_page: 5
+    ```
+
+
+## Demo
+
+#### Video coming up soon.........
 
 ## Usage
 
-### Pagination
+### Initial Setup
 
-  - Use Rummage.Ecto in the models/ecto structs:
+  - Use `Rummage.Ecto` in the models/ecto structs:
 
   ```elixir
   defmodule MyApp.Product do
     use MyApp.Web, :model
-    use Rummage.Ecto, repo: MyApp.Repo, per_page: 5
+    use Rummage.Ecto, repo: MyApp.Repo, per_page: 5 # <-- You don't have to pass per_page if you have set it in the config.exs
 
     # More code below....
   end
   ```
 
-  - Use Rummage.Controller in to controller module:
+  - Use `Rummage.Controller` in to controller module:
 
   ```elixir
   defmodule MyApp.ProductController do
@@ -53,7 +75,7 @@ If [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), th
   end
   ```
 
-  - Change the index action in the controller:
+  - Change the `index` action in the controller:
 
   ```elixir
   def index(conn, params) do
@@ -68,6 +90,130 @@ If [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), th
   end
   ```
 
-  - Test with params:
+  - if using Search feature, define a `search` path in the `router.ex` (no need to define the action):
 
-  ![after pagination](src/images/rummage_ecto_paginate.png)
+  ```elixir
+  scope "/", RummagePhoenixExample do
+    pipe_through :browser # Use the default browser stack
+
+    get "/", PageController, :index
+    resources "/products", ProductController
+    post "/products/search", ProductController, :search # <----------------- RIGHT HERE
+  end
+  ```
+
+Doing this itself will allow you to search, sort and paginate by updating `params` on the request.
+Please check the [screenshots](#More Screenshots) below for details
+
+
+### Using Rummage.ViewHelpers
+
+  - #### Pagination:
+  Add this at the bottom of `index.html.eex` to render `Rummage` pagination links (Make sure that you
+  pass `rummage` to the views from the `index` action in the controller) :
+
+  ```elixir
+  <%= pagination_link(@conn, @rummage) %>
+  ```
+
+  Reload and this is how your page should look:
+
+  ![phoenix pagination](src/images/rummage_phoenix_pagination.png)
+
+
+  - #### Sorting:
+  Replace table headers on the `index.html.eex` with sort links (Make sure that the headers are actual columns in the
+  table in the database.)
+
+  Replace this:
+  ```elixir
+    <th>Name</th>
+    <th>Price</th>
+    <th>Category</th>
+  ```
+
+  With:
+  ```elixir
+    <th><%= sort_link :name, @conn, @rummage %></th>
+    <th><%= sort_link :price, @conn, @rummage %></th>
+    <th><%= sort_link :category, @conn, @rummage %></th>
+  ```
+
+  Reload and this is how your page should look with sortable links instead of just table headers:
+
+  ![phoenix sorting](src/images/rummage_phoenix_sorting.png)
+
+  **NOTE: Currently working on adding better elements to the views, soon the text
+  arrow in the sort links will be replaced by an icon**
+
+  - ### Searching:
+  Add a search form in the `index.html.eex` with searchable fields:
+
+  ```elixir
+  <%= search_form(@conn, [:name], @rummage) %>
+  ```
+
+  Reload and your page should look somewhat like this:
+  ![phoenix searching](src/images/rummage_phoenix_searching.png)
+
+  - #### ALL TOGETHER:
+  The best part about `Rummage` is that all the three hooks/operations integrate seamlessly without affecting each other's functionality
+  and therefore, you have a page looking somewhat like this:
+
+  ![phoenix all together](src/images/all_together.png)
+
+## More Screenshots
+
+### Before rummage
+![before pagination](src/images/before_rummage.png)
+
+### After Pagination:
+
+- Default pagination:
+
+![after pagination](src/images/rummage_ecto_paginate.png)
+
+- Custom pagination params:
+
+![custom pagination params](src/images/custom_pagination_params.png)
+![custom pagination page](src/images/custom_paginated_page.png)
+
+### After Pagination View:
+
+- Default
+![after pagination](src/images/rummage_ecto_paginate.png)
+
+- Custom pagination params
+![phoenix pagination](src/images/rummage_phoenix_pagination.png)
+
+### After Sort:
+
+![custom sort params asc](src/images/custom_sort_params_asc.png)
+![custom sort page asc](src/images/rummage_ecto_sort_asc.png)
+
+
+![custom sort params desc](src/images/custom_sort_params_desc.png)
+![custom sort page desc](src/images/rummage_ecto_sort_desc.png)
+
+### After Sort View:
+
+![phoenix sorting](src/images/rummage_phoenix_sorting.png)
+
+### After Search:
+
+![custom search params](src/images/custom_search_params.png)
+![custom search page](src/images/rummage_ecto_search.png)
+
+### After Search View:
+
+![phoenix searching](src/images/rummage_phoenix_searching.png)
+
+## Coming up Next:
+
+- Better sort links using icons instead of arrows.
+- Not having to pass repo, helpers and model while using view, if default.
+- Not having to pass repo, helpers and model while using controller, if default.
+- A Video with the demo.
+
+
+
