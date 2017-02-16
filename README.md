@@ -33,7 +33,7 @@ This is [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html
 
 `Rumamge.Phoenix` can be configured globally with a `per_page` value (which can be overriden for a model).
 This is **NOT** the preferred way to set `per_page` as it might lead to conflicts. It is recommended to
-do it per model as show below in the [Initial Setup](#Initial Setup) section. If you wanna set per_page
+do it per model as show below in the [Initial Setup](#initial-setup) section. If you wanna set per_page
 for all the models, add it to `model` function in `web.ex`
 
   - Add `rummage_phoenix` to your list of dependencies in `mix.exs`:
@@ -103,7 +103,7 @@ for all the models, add it to `model` function in `web.ex`
   ```
 
 Doing this itself will allow you to search, sort and paginate by updating `params` on the request.
-Please check the [screenshots](#More Screenshots) below for details
+Please check the [screenshots](#more-screenshots) below for details
 
 
 ### Using Rummage.ViewHelpers
