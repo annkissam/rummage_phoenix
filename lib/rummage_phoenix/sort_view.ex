@@ -1,4 +1,4 @@
-defmodule RummagePhoenix.SortView do
+defmodule Rummage.Phoenix.SortView do
   @moduledoc """
   Sort View Module for Rummage. This has view helpers that can generate rummagable links and forms.
   """

@@ -1,6 +1,6 @@
-defmodule RummagePhoenix.Controller do
+defmodule Rummage.Phoenix.Controller do
   @moduledoc """
-  Controller Module for RummagePhoenix. This builds rummage params and performs search action
+  Controller Module for Rummage.Phoenix. This builds rummage params and performs search action
   """
 
   defmacro __using__(opts) do
@@ -19,12 +19,12 @@ defmodule RummagePhoenix.Controller do
 
     if "search" in used_hooks do
       quote do
-        use RummagePhoenix.SearchController, struct: unquote(opts[:struct]), helper: unquote(opts[:helper])
+        use Rummage.Phoenix.SearchController, struct: unquote(opts[:struct]), helper: unquote(opts[:helper])
       end
     end
 
     # Enum.each(used_hooks, fn(hook) ->
-    #   controller = Module.concat("RummagePhoenix", "#{Macro.camelize(hook)}Controller")
+    #   controller = Module.concat("Rummage.Phoenix", "#{Macro.camelize(hook)}Controller")
 
     #   quote do
     #     use unquote(controller), struct: unquote(opts[:struct]), helper: unquote(opts[:helper])

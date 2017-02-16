@@ -1,4 +1,4 @@
-# RummagePhoenix
+# Rummage.Phoenix
 
 `Rummage.Phoenix` is a support framework for Phoenix that can be used to manipulate Phoenix collections and Ecto
 models with Search, Sort and Paginate operations.

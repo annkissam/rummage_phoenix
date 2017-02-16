@@ -1,4 +1,4 @@
-defmodule RummagePhoenix.PaginateView do
+defmodule Rummage.Phoenix.PaginateView do
   @moduledoc """
   View Helper for Pagination in Rummage for bootstrap views.
   """
@@ -10,7 +10,7 @@ defmodule RummagePhoenix.PaginateView do
 
         total_count = String.to_integer(pagiante_params["total_count"] || "1")
 
-        per_page = String.to_integer(pagiante_params["per_page"] || RummagePhoenix.per_page)
+        per_page = String.to_integer(pagiante_params["per_page"] || Rummage.Phoenix.per_page)
         page = String.to_integer(pagiante_params["page"] || "1")
         max_page = String.to_integer(pagiante_params["max_page"] || "1")
 

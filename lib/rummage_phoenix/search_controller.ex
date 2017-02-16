@@ -1,4 +1,4 @@
-defmodule RummagePhoenix.SearchController do
+defmodule Rummage.Phoenix.SearchController do
   @moduledoc """
   Search Controller Module for Rummage. This builds rummage params and performs search action
   """

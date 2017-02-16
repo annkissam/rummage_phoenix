@@ -1,11 +1,11 @@
-defmodule RummagePhoenix do
+defmodule Rummage.Phoenix do
   def per_page do
     config(:per_page, "10")
   end
 
   @doc false
   def config do
-    Application.get_env(:rummage_phoenix, RummagePhoenix, [])
+    Application.get_env(:rummage_phoenix, Rummage.Phoenix, [])
   end
 
   @doc false

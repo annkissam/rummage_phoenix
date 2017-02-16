@@ -1,6 +1,6 @@
-defmodule RummagePhoenixTest do
+defmodule Rummage.PhoenixTest do
   use ExUnit.Case
-  doctest RummagePhoenix
+  doctest Rummage.Phoenix
 
   test "the truth" do
     assert 1 + 1 == 2

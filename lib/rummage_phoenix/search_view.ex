@@ -1,4 +1,4 @@
-defmodule RummagePhoenix.SearchView do
+defmodule Rummage.Phoenix.SearchView do
   @moduledoc """
   Search View Module for Rummage. This has view helpers that can generate rummagable links and forms.
   """
