@@ -44,7 +44,7 @@ end
   defp deps do
     [
       {:phoenix, "~> 1.2.1"},
-      {:rummage_ecto, path: "/Users/adiiyengar/Excipients/rummage_ecto"},
+      {:rummage_ecto, path: "https://github.com/Excipients/rummage_ecto"},
       {:ex_doc, ">= 0.0.0", only: :dev},
     ]
   end
