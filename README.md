@@ -5,7 +5,7 @@ models with Search, Sort and Paginate operations.
 
 It accomplishes the above operations by using `Rummage.Ecto`, to paginate `Ecto` queries and adds Phoenix and HTML
 support to views and controllers. For information on how to configure `Rummage.Ecto` visit
-[this](/Users/adiiyengar/Excipients/rummage_ecto) page.
+[this](https://github.com/Excipients/rummage_ecto) page.
 
 The best part about rummage is that all the three operations: `Search`, `Sort` and `Paginate` integrate seamlessly and
 can be configured separately. To check out their seamless integration, please check the information below.
