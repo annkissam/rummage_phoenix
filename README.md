@@ -17,7 +17,7 @@ is why Rummage has been made configurable.**
 
 ## Installation
 
-This is [available in Hex](https://hexdocs.pm/rummage_phoenix/api-reference.html), the package can be installed as:
+This is [available in Hex](https://hexdocs.pm/rummage_phoenix/), the package can be installed as:
 
   - Add `rummage_phoenix` to your list of dependencies in `mix.exs`:
 
