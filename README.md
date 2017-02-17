@@ -14,6 +14,13 @@ can be configured separately. To check out their seamless integration, please ch
 If you'd like to have that for a model, you can always configure `Rummage` to use your `Search` module for that model. This
 is why Rummage has been made configurable.**
 
+________________________________________________________________________________________________
+
+**Search, Sort and Paginate seamlessly in Phoenix!**
+
+![phoenix all together](src/images/rummage_all_together.gif)
+
+________________________________________________________________________________________________
 
 ## Installation
 
@@ -29,11 +36,20 @@ This is [available in Hex](https://hexdocs.pm/rummage_phoenix/), the package can
     end
     ```
 
-## Demo
+## Configuration (Optional, Not the preferred way to set `per_page`)
 
-Search, Sort and Paginate seamlessly in Phoenix!
+`Rumamge.Phoenix` can be configured globally with a `per_page` value (which can be overriden for a model).
+This is **NOT** the preferred way to set `per_page` as it might lead to conflicts. It is recommended to
+do it per model as show below in the [Initial Setup](#initial-setup) section. If you wanna set per_page
+for all the models, add it to `model` function in `web.ex`
 
-![phoenix all together](src/images/rummage_all_together.gif)
+  - Add `rummage_phoenix` config to your list of configs in `dev.exs`:
+
+    ```elixir
+    config :rummage_phoenix,
+      Rummage.Phoenix,
+      per_page: 5
+    ```
 
 ## Usage
 
@@ -193,22 +209,6 @@ Please check the [screenshots](#more-screenshots) below for details
 ### After Search View:
 
 ![phoenix searching](src/images/rummage_phoenix_searching.png)
-
-## Configuration (Optional, Not the preferred way to set `per_page`)
-
-`Rumamge.Phoenix` can be configured globally with a `per_page` value (which can be overriden for a model).
-This is **NOT** the preferred way to set `per_page` as it might lead to conflicts. It is recommended to
-do it per model as show below in the [Initial Setup](#initial-setup) section. If you wanna set per_page
-for all the models, add it to `model` function in `web.ex`
-
-  - Add `rummage_phoenix` config to your list of configs in `dev.exs`:
-
-    ```elixir
-    config :rummage_phoenix,
-      Rummage.Phoenix,
-      per_page: 5
-    ```
-
 
 ## Coming up Next:
 
