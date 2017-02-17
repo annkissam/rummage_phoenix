@@ -47,11 +47,9 @@ for all the models, add it to `model` function in `web.ex`
 
 ## Demo
 
-#### Video coming up soon.........
+Search, Sort and Paginate seamlessly in Phoenix!
 
-Search, Sort and Paginate in Phoenix!
-
-![phoenix all together](src/images/all_together.png)
+![phoenix all together](src/images/rummage_all_together.gif)
 
 ## Usage
 
