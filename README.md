@@ -1,5 +1,7 @@
 # Rummage.Phoenix
 
+[![Build Status](https://travis-ci.org/Excipients/rummage_phoenix.svg?branch=master)](https://travis-ci.org/Excipients/rummage_phoenix) [![Hex Version](http://img.shields.io/hexpm/v/rummage_phoenix.svg?style=flat)](https://hex.pm/packages/rummage_phoenix) [![Hex docs](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/rummage_phoenix)
+
 `Rummage.Phoenix` is a support framework for `Phoenix` that can be used to manipulate `Phoenix` collections and `Ecto`
 models with Search, Sort and Paginate operations.
 
