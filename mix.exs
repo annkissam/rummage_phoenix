@@ -58,6 +58,7 @@ end
 
   def docs do
     [
+      main: "readme",
       source_url: "https://github.com/Excipients/rummage_phoenix",
       extras: ["README.md"],
       source_ref: "v#{@version}"
