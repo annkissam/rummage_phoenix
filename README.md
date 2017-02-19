@@ -97,7 +97,7 @@ for all the models, add it to `model` function in `web.ex`
   - if using Search feature, define a `search` path in the `router.ex` (no need to define the action):
 
   ```elixir
-  scope "/", RummagePhoenixExample do
+  scope "/", MyApp do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
@@ -111,6 +111,18 @@ Please check the [screenshots](#more-screenshots) below for details
 
 
 ### Using Rummage.ViewHelpers
+
+  - Use `Rummage.View` in to a view module:
+
+  ```elixir
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    use Rummage.Phoenix.View, struct: :product, helper: MyApp.Router.Helpers,
+      default_scope: MyApp.Product, repo: MyApp.Repo
+
+    # More code below...
+  end
+  ```
 
   - #### Pagination:
   Add this at the bottom of `index.html.eex` to render `Rummage` pagination links (Make sure that you
