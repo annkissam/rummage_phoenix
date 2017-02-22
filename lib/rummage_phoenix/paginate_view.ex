@@ -1,8 +1,34 @@
 defmodule Rummage.Phoenix.PaginateView do
   @moduledoc """
   View Helper for Pagination in Rummage for bootstrap views.
+
+  Usage:
+
+  ```elixir
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    use Rummage.Phoenix.View, struct: :product, helper: MyApp.Router.Helpers,
+      default_scope: MyApp.Product, repo: MyApp.Repo
+  end
+  ```
+
   """
 
+  @doc """
+  This macro includes the helper functions from different Rummage.Phoenix.PaginationView
+
+  Provides helper function `pagination_link/3` for creating pagination links in an html.eex
+  file of using `Phoenix`.
+
+  Usage:
+  Just add the following code in the index template. Make sure that you're passing
+  rummage from the controller. Please look at the
+  [README](https://github.com/Excipients/rummage_phoenix) for more details
+
+  ```elixir
+  pagination_link(@conn, @rummage)
+  ```
+  """
   defmacro __using__(opts) do
     quote do
       def pagination_link(conn, rummage, query \\ unquote(opts[:default_scope])) do

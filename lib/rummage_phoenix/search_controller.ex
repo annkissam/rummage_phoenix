@@ -1,8 +1,21 @@
 defmodule Rummage.Phoenix.SearchController do
   @moduledoc """
   Search Controller Module for Rummage. This builds rummage params and performs search action
+
+  Usage:
+
+   ```elixir
+  defmodule MyApp.ProductController do
+    use MyApp.Web, :controller
+    use Rummage.Phoenix.Controller, struct: :product, helper: MyApp.Router.Helpers
+  end
+  ```
   """
 
+  @doc """
+  This macro includes the helper functions from different Rummage.Phoenix.SearchController.
+  It defines a `search` action which redirects to `index` action
+  """
   defmacro __using__(opts) do
     quote do
       def search(conn, params) do

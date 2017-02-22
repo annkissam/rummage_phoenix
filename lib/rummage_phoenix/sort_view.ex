@@ -1,8 +1,33 @@
 defmodule Rummage.Phoenix.SortView do
   @moduledoc """
   Sort View Module for Rummage. This has view helpers that can generate rummagable links and forms.
+
+  Usage:
+
+  ```elixir
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    use Rummage.Phoenix.View, struct: :product, helper: MyApp.Router.Helpers,
+      default_scope: MyApp.Product, repo: MyApp.Repo
+  end
+  ```
   """
 
+  @doc """
+  This macro includes the helper functions from different Rummage.Phoenix.SortView
+
+  Provides helper function `sort_link/3` for creating sort links in an html.eex
+  file of using `Phoenix`.
+
+  Usage:
+  Just add the following code in the index template. Make sure that you're passing
+  rummage from the controller. Please look at the
+  [README](https://github.com/Excipients/rummage_phoenix) for more details
+
+  ```elixir
+  sort_link(:title, @conn, @rummage)
+  ```
+  """
   defmacro __using__(opts) do
     quote do
       def sort_link(field, conn, rummage, name \\ nil) do

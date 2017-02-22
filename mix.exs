@@ -45,7 +45,7 @@ end
     [
       {:phoenix, "~> 1.2.1"},
       {:rummage_ecto, "~> 0.6.0"},
-      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
     ]
   end
 
@@ -58,9 +58,9 @@ end
 
   def docs do
     [
-      main: "readme",
+      main: "Rummage.Phoenix",
       source_url: "https://github.com/Excipients/rummage_phoenix",
-      extras: ["README.md"],
+      extras: ["doc_readme.md"],
       source_ref: "v#{@version}"
     ]
   end
