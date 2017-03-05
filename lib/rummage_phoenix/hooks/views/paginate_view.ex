@@ -7,17 +7,25 @@ defmodule Rummage.Phoenix.PaginateView do
   ```elixir
   defmodule MyApp.ProductView do
     use MyApp.Web, :view
-    use Rummage.Phoenix.View, struct: :product, helpers: MyApp.Router.Helpers,
-      default_scope: MyApp.Product, repo: MyApp.Repo
+    use Rummage.Phoenix.View, only: [:paginate]
+  end
+  ```
+
+  OR
+
+  ```elixir
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    use Rummage.Phoenix.View
   end
   ```
 
   """
 
   @doc """
-  This macro includes the helpers functions from different Rummage.Phoenix.PaginationView
+  This macro includes the helpers functions for pagination
 
-  Provides helpers function `pagination_link/3` for creating pagination links in an html.eex
+  Provides helper functions `pagination_link/3` for creating pagination links in an html.eex
   file of using `Phoenix`.
 
   Usage:

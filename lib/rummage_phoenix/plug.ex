@@ -1,30 +1,41 @@
 defmodule Rummage.Phoenix.Plug do
   @moduledoc """
-  This plug ensures that a invalid JWT was provided and has been
-  verified on the request.
+  This plug ensures that the `rummage` params are properly set before
+  `index` action of the controller. If they are not, then it formats them
+  accordingly.
 
-  If one is found, the `already_authenticated/2` function is invoked with the
-  `Plug.Conn.t` object and its params.
+  This plug only works with the default `Rummmage.Ecto` hooks.
+  """
 
-  ## Example
+  @doc """
+  `init` initializes the plug and returns the `params` passed
+  to it:
 
-      # Will call the already_authenticated/2 function on your handler
-      plug Guardian.Plug.EnsureNotAuthenticated, handler: SomeModule
-
-      # look in the :secret location.  You can also do simple claim checks:
-      plug Guardian.Plug.EnsureNotAuthenticated, handler: SomeModule,
-                                                 key: :secret
-
-      plug Guardian.Plug.EnsureNotAuthenticated, handler: SomeModule,
-                                                 typ: "access"
-
-  If the handler option is not passed, `Guardian.Plug.ErrorHandler` will provide
-  the default behavior.
+  ## Examples
+      iex> alias Rummage.Phoenix.Plug
+      iex> params = %{}
+      iex> Plug.init(params)
+      %{}
   """
   def init(params) do
     params
   end
 
+  @doc """
+  `conn` initializes the plug and returns the `params` passed
+  to it:
+
+  ## Examples
+      iex> params = %{}
+      iex> conn = %Plug.Conn{}
+      iex> Rummage.Phoenix.Plug.call(conn, params) == conn
+      true
+
+      iex> params = %{hooks: ["search", "sort", "paginate"]}
+      iex> conn = %{__struct__: Plug.Conn, params: %{}, private: %{phoenix_action: :index}}
+      iex> Rummage.Phoenix.Plug.call(conn, params) == %{__struct__: Plug.Conn, params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :index}}
+      true
+  """
   def call(conn, opts) do
     hooks = opts[:hooks]
     before_action(conn, hooks)

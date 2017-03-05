@@ -4,18 +4,26 @@ defmodule Rummage.Phoenix.SearchView do
 
   Usage:
 
-  ```elixir
-  defmodule MyApp.ProductView do
-    use MyApp.Web, :view
-    use Rummage.Phoenix.View, struct: :product, helpers: MyApp.Router.Helpers,
-      default_scope: MyApp.Product, repo: MyApp.Repo
-  end
-  ```
+    ```elixir
+    defmodule MyApp.ProductView do
+      use MyApp.Web, :view
+      use Rummage.Phoenix.View, only: [:search]
+    end
+    ```
 
-  """
+    OR
+
+    ```elixir
+    defmodule MyApp.ProductView do
+      use MyApp.Web, :view
+      use Rummage.Phoenix.View
+    end
+    ```
+
+    """
 
   @doc """
-  This macro includes the helpers functions from different Rummage.Phoenix.SearchView
+  This macro includes the helpers functions for searching.
 
   Provides helpers function `search_form/3` for creating search form in an html.eex
   file of using `Phoenix`.

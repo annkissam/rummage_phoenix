@@ -4,17 +4,28 @@ defmodule Rummage.Phoenix.SortView do
 
   Usage:
 
+  Usage:
+
   ```elixir
   defmodule MyApp.ProductView do
     use MyApp.Web, :view
-    use Rummage.Phoenix.View, struct: :product, helpers: MyApp.Router.Helpers,
-      default_scope: MyApp.Product, repo: MyApp.Repo
+    use Rummage.Phoenix.View, only: [:paginate]
   end
   ```
+
+  OR
+
+  ```elixir
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    use Rummage.Phoenix.View
+  end
+  ```
+
   """
 
   @doc """
-  This macro includes the helpers functions from different Rummage.Phoenix.SortView
+  This macro includes the helpers functions for sorting.
 
   Provides helpers function `sort_link/3` for creating sort links in an html.eex
   file of using `Phoenix`.
