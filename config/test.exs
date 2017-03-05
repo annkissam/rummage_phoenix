@@ -3,8 +3,13 @@ use Mix.Config
 config :logger, :console,
   level: :error
 
-config :rummage_ecto, Rummage.Ecto,[
-  default_repo: Rummage.Ecto.Repo,
+config :rummage_ecto, Rummage.Ecto, [
+  default_repo: Rummage.Phoenix.Repo,
+  default_per_page: 2,
+]
+
+config :rummage_phoenix, Rummage.Phoenix, [
+  default_helpers: Rummage.Phoenix.Router.Helpers,
   default_per_page: 2,
 ]
 
