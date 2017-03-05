@@ -17,12 +17,16 @@ defmodule Rummage.Phoenix do
   """
 
   @doc false
-  def per_page do
-    config(:per_page, "10")
+  def default_per_page do
+    config(:default_per_page, "10")
+  end
+
+  def default_helpers do
+    config(:default_helpers, nil)
   end
 
   @doc false
-  def config do
+  defp config do
     Application.get_env(:rummage_phoenix, Rummage.Phoenix, [])
   end
 
