@@ -44,7 +44,7 @@ end
   defp deps do
     [
       {:phoenix, "~> 1.2.1"},
-      {:rummage_ecto, "~> 0.6.0"},
+      {:rummage_ecto, path: "/Users/adiiyengar/Excipients/rummage_ecto"},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
     ]
   end
