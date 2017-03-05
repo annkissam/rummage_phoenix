@@ -29,11 +29,9 @@ defmodule Rummage.Phoenix.Controller do
   This macro includes the helpers functions from different Rummage.Phoenix.Controllers
   """
   defmacro __using__(opts) do
-    used_hooks = (opts[:only] || [:search, :sort, :paginate])
-      |> Enum.map(&Atom.to_string &1)
-
     quote do
-      plug Rummage.Phoenix.Plug, %{hooks: unquote(used_hooks)}
+      plug Rummage.Phoenix.Plug, %{hooks: unquote((opts[:only] || [:search, :sort, :paginate])
+                                                    |> Enum.map(&Atom.to_string &1))}
     end
   end
 end
