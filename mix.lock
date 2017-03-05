@@ -22,5 +22,5 @@
   "poison": {:hex, :poison, "2.2.0", "4763b69a8a77bd77d26f477d196428b741261a761257ff1cf92753a0d4d24a63", [:mix], []},
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], []},
   "postgrex": {:hex, :postgrex, "0.13.2", "2b88168fc6a5456a27bfb54ccf0ba4025d274841a7a3af5e5deb1b755d95154e", [:mix], [{:connection, "~> 1.0", [hex: :connection, optional: false]}, {:db_connection, "~> 1.1", [hex: :db_connection, optional: false]}, {:decimal, "~> 1.0", [hex: :decimal, optional: false]}]},
-  "rummage_ecto": {:hex, :rummage_ecto, "0.6.0", "c06b4757e1c744758500382348f444e5d4db2c83113dc35d05fe320976522fab", [:mix], [{:ecto, "~> 2.1", [hex: :ecto, optional: false]}]},
+  "rummage_ecto": {:hex, :rummage_ecto, "1.0.0", "e6b42e8bd567a49b710679a4f175a15613836c75d2b0841af956cc63007c8998", [:mix], [{:ecto, "~> 2.1", [hex: :ecto, optional: false]}]},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.1", "28a4d65b7f59893bc2c7de786dec1e1555bd742d336043fe644ae956c3497fbe", [:make, :rebar], []}}

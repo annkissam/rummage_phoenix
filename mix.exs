@@ -56,7 +56,7 @@ end
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
       {:phoenix, "~> 1.2.1"},
       {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, path: "/Users/adiiyengar/Excipients/rummage_ecto"},
+      {:rummage_ecto, "~> 1.0.0"},
     ]
   end
 
