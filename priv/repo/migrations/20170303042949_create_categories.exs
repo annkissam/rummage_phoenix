@@ -1,4 +1,4 @@
-defmodule Rummage.Ecto.Repo.Migrations.CreateCategories do
+defmodule Rummage.Phoenix.Repo.Migrations.CreateCategories do
   use Ecto.Migration
 
   def change do
