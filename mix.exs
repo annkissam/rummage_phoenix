@@ -1,7 +1,7 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "0.6.0"
+  @version "1.0.0"
   @url "https://github.com/Excipients/rummage_phoenix"
 
   def project do
@@ -12,6 +12,12 @@ defmodule Rummage.Phoenix.Mixfile do
       deps: deps(),
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
+
+      # Test
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test],
+      aliases: aliases(),
+      elixirc_paths: elixirc_paths(Mix.env),
 
       # Hex
       description: description(),
@@ -43,9 +49,14 @@ end
 
   defp deps do
     [
-      {:phoenix, "~> 1.2.1"},
-      {:rummage_ecto, path: "/Users/adiiyengar/Excipients/rummage_ecto"},
+      {:credo, "~> 0.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.3", only: :test},
+      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+      {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
+      {:phoenix, "~> 1.2.1"},
+      {:postgrex, ">= 0.0.0", only: [:test]},
+      {:rummage_ecto, path: "/Users/adiiyengar/Excipients/rummage_ecto"},
     ]
   end
 
@@ -64,4 +75,26 @@ end
       source_ref: "v#{@version}"
     ]
   end
+
+  defp aliases do
+    [
+      "ecto.setup": [
+        "ecto.create",
+        "ecto.migrate"
+      ],
+     "ecto.reset": [
+        "ecto.drop",
+        "ecto.setup"
+      ],
+     "test": [
+        # "ecto.drop",
+        "ecto.create --quiet",
+        "ecto.migrate",
+        "test"
+      ],
+    ]
+  end
+
+  defp elixirc_paths(:test), do: ["lib", "priv", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 end
