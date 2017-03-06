@@ -35,6 +35,11 @@ defmodule Rummage.Phoenix.Plug do
       iex> conn = %{__struct__: Plug.Conn, params: %{}, private: %{phoenix_action: :index}}
       iex> Rummage.Phoenix.Plug.call(conn, params) == %{__struct__: Plug.Conn, params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :index}}
       true
+
+      iex> params = %{hooks: ["search", "sort", "paginate"]}
+      iex> conn = %{__struct__: Plug.Conn, params: %{"rummage" => %{}}, private: %{phoenix_action: :index}}
+      iex> Rummage.Phoenix.Plug.call(conn, params) == %{__struct__: Plug.Conn, params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :index}}
+      true
   """
   def call(conn, opts) do
     hooks = opts[:hooks]
@@ -56,10 +61,8 @@ defmodule Rummage.Phoenix.Plug do
           |> Enum.into(%{})
         )
       rummage ->
-        Map.put(params, "rummage",
-          Enum.map(hooks, &{&1,
-            apply(String.to_atom("Elixir.Rummage.Phoenix.#{String.capitalize(&1)}Controller"),
-            :rummage, [rummage])})
+        Map.put(params, "rummage", Enum.map(hooks, &{&1,
+            apply(String.to_atom("Elixir.Rummage.Phoenix.#{String.capitalize(&1)}Controller"), :rummage, [rummage])})
           |> Enum.into(%{})
         )
     end
