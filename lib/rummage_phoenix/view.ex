@@ -7,7 +7,7 @@ defmodule Rummage.Phoenix.View do
   ```elixir
   defmodule MyApp.ProductView do
     use MyApp.Web, :view
-    use Rummage.Phoenix.View, struct: :product, helpers: MyApp.Router.Helpers
+    use Rummage.Phoenix.View
   end
   ```
   """

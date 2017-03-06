@@ -39,16 +39,16 @@ This is [available in Hex](https://hexdocs.pm/rummage_phoenix/), the package can
     ```elixir
     def deps do
       [
-        {:rummage_phoenix, "~> 0.6.0"}
+        {:rummage_phoenix, "~> 1.0.0"}
       ]
     end
     ```
 
-## Configuration (Optional, Not the preferred way to set `per_page`)
+## Configuration (Optional, Not the preferred way to set `default_per_page`)
 
-`Rumamge.Phoenix` can be configured globally with a `per_page` value (which can be overriden for a model).
-This is **NOT** the preferred way to set `per_page` as it might lead to conflicts. It is recommended to
-do it per model as show below in the [Initial Setup](#initial-setup) section. If you wanna set per_page
+`Rumamge.Phoenix` can be configured globally with a `default_per_page` value (which can be overriden for a model).
+This is **NOT** the preferred way to set `default_per_page` as it might lead to conflicts. It is recommended to
+do it per model as show below in the [Initial Setup](#initial-setup) section. If you want to set `default_per_page`
 for all the models, add it to `model` function in `web.ex`
 
   - Add `rummage_phoenix` config to your list of configs in `dev.exs`:
@@ -56,10 +56,10 @@ for all the models, add it to `model` function in `web.ex`
     ```elixir
     config :rummage_phoenix,
       Rummage.Phoenix,
-      per_page: 5
+      default_per_page: 5
     ```
 
-## Usage
+## Usage (The screenshots correspond to version 0.6.0, soon there will be screenshots for version 1.0.0)
 
 ### Initial Setup
 
@@ -68,7 +68,7 @@ for all the models, add it to `model` function in `web.ex`
   ```elixir
   defmodule MyApp.Product do
     use MyApp.Web, :model
-    use Rummage.Ecto, repo: MyApp.Repo, per_page: 5 # <-- You don't have to pass per_page if you have set it in the config.exs, but this way is preferred over setting it up in config file.
+    use Rummage.Ecto
 
     # More code below....
   end
@@ -79,7 +79,7 @@ for all the models, add it to `model` function in `web.ex`
   ```elixir
   defmodule MyApp.ProductController do
     use MyApp.Web, :controller
-    use Rummage.Phoenix.Controller, struct: :product, helper: MyApp.Router.Helpers
+    use Rummage.Phoenix.Controller
 
     # More code below....
   end
@@ -108,7 +108,6 @@ for all the models, add it to `model` function in `web.ex`
 
     get "/", PageController, :index
     resources "/products", ProductController
-    post "/products/search", ProductController, :search # <----------------- RIGHT HERE
   end
   ```
 
@@ -123,8 +122,7 @@ Please check the [screenshots](#more-screenshots) below for details
   ```elixir
   defmodule MyApp.ProductView do
     use MyApp.Web, :view
-    use Rummage.Phoenix.View, struct: :product, helper: MyApp.Router.Helpers,
-      default_scope: MyApp.Product, repo: MyApp.Repo
+    use Rummage.Phoenix.View
 
     # More code below...
   end
@@ -156,9 +154,13 @@ Please check the [screenshots](#more-screenshots) below for details
 
   With:
   ```elixir
-    <th><%= sort_link :name, @conn, @rummage %></th>
-    <th><%= sort_link :price, @conn, @rummage %></th>
-    <th><%= sort_link :category, @conn, @rummage %></th>
+    <th><%= sort_link @conn, @rummage, [field: :name, ci: true] %></th>
+    <th><%= sort_link @conn, @rummage, [field: :price] %></th>
+  ```
+
+  OR for Sort by associations:
+  ```elixir
+    <th><%= sort_link @conn, @rummage, [field: :category_name, name: "Category Name", assoc: ["category"]] %></th>
   ```
 
   Reload and this is how your page should look with sortable links instead of just table headers:
@@ -172,7 +174,21 @@ Please check the [screenshots](#more-screenshots) below for details
   Add a search form in the `index.html.eex` with searchable fields:
 
   ```elixir
-  <%= search_form(@conn, [:name], @rummage) %>
+  <%= search_form(@conn, @rummage, [fields:
+  [
+    name: %{label: "Search by Product Name", search_type: "ilike"},
+    price: %{label: "Search by Price", search_type: "eq"},
+  ], button_class: "btn",
+  ]) %>
+  ```
+  OR for Search by associations:
+
+  ```elixir
+  <%= search_form(@conn, @rummage, [fields:
+  [
+    category_name: %{label: "Search by Category Name", search_type: "ilike", assoc: ["category"]}
+  ], button_class: "btn",
+  ]) %>
   ```
 
   Reload and your page should look somewhat like this:
