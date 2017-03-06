@@ -45,6 +45,11 @@ defmodule Rummage.Phoenix.SortView do
         current_sort_params = rummage["sort"]
 
         field = Keyword.fetch!(link_params, :field)
+        asc_sort_icon = Keyword.get(link_params, :sort_icon)
+        asc_sort_text = Keyword.get(link_params, :asc_sort_text, "↑")
+        desc_sort_icon = Keyword.get(link_params, :sort_icon)
+        desc_sort_text = Keyword.get(link_params, :desc_sort_text, "↓")
+
 
         name = link_params[:name] || Phoenix.Naming.humanize(field)
         ci = link_params[:ci] || false
@@ -57,18 +62,40 @@ defmodule Rummage.Phoenix.SortView do
         sort_params = %{"assoc" => assoc, "field" => sort_field}
 
         raw link_with_icon(name, apply(unquote(opts[:helpers]),
-          String.to_atom("#{unquote(opts[:struct])}_path"), [conn, :index, %{rummage: Map.put(rummage, "sort", sort_params)}]), current_order)
+          String.to_atom("#{unquote(opts[:struct])}_path"), [conn, :index, %{rummage: Map.put(rummage, "sort", sort_params)}]),
+          current_order, asc_sort_icon, asc_sort_text, desc_sort_icon, desc_sort_text)
       end
 
-      defp link_with_icon(name, url, current_order) do
-        if current_order do
-          """
-          <a class="page-link" href="#{url}">#{name}  <img src=\"images/#{current_order}.png\" alt=\"" height=\"10\" width=\"10\"></a>
-          """
-        else
-          """
-          <a class="page-link" href="#{url}">#{name}</a>
-          """
+      defp link_with_icon(name, url, current_order,  asc_sort_icon, asc_sort_text, desc_sort_icon, desc_sort_text) do
+        case current_order do
+          "asc" ->
+            case asc_sort_icon do
+              nil ->
+                """
+                <a class="page-link" href="#{url}">#{name} #{asc_sort_text}</a>
+                """
+              _ ->
+                """
+                <a class="page-link" href="#{url}">#{name}  <img src=\"#{asc_sort_icon}\" alt=\"#{asc_sort_text}\" title=\"#{asc_sort_text}\" height=\"10\" width=\"10\"></a>
+                """
+            end
+
+          "desc" ->
+            case desc_sort_icon do
+              nil ->
+                """
+                <a class="page-link" href="#{url}">#{name} #{desc_sort_text}</a>
+                """
+              _ ->
+                """
+                <a class="page-link" href="#{url}">#{name}  <img src=\"#{desc_sort_icon}\" alt=\"#{desc_sort_text}\" title=\"#{desc_sort_text}\" height=\"10\" width=\"10\"></a>
+                """
+            end
+
+          _ ->
+            """
+            <a class="page-link" href="#{url}">#{name}</a>
+            """
         end
       end
 

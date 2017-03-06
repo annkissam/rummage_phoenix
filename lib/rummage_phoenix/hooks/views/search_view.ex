@@ -43,6 +43,7 @@ defmodule Rummage.Phoenix.SearchView do
         search = rummage["search"]
         sort = if rummage["sort"], do: Poison.encode!(rummage["sort"]), else: ""
         paginate = if rummage["paginate"], do: Poison.encode!(rummage["paginate"]), else: ""
+
         button_class = Keyword.get(link_params, :button_class, "btn btn-primary")
         fields = Keyword.fetch!(link_params, :fields)
 
