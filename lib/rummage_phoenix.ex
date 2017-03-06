@@ -16,24 +16,69 @@ defmodule Rummage.Phoenix do
   [this link](https://github.com/Excipients/rummage_phoenix_example).
   """
 
-  @doc false
-  def per_page do
-    config(:per_page, "10")
+  @doc """
+  `:default_per_page` can also be set at run time
+  in the `config.exs` file
+
+  ## Examples
+  Returns default `Repo` set in the config
+  (`2 in `rummage_ecto`'s test env):
+      iex> alias Rummage.Phoenix
+      iex> Phoenix.default_per_page
+      2
+  """
+  def default_per_page do
+    config(:default_per_page, "10")
+  end
+
+  @doc """
+  `:default_helpers` can also be set at run time
+  in the `config.exs` file
+
+  ## Examples
+  Returns default `Repo` set in the config
+  (`2 in `rummage_ecto`'s test env):
+      iex> alias Rummage.Phoenix
+      iex> Phoenix.default_helpers
+      Rummage.Phoenix.Router.Helpers
+  """
+  def default_helpers do
+    config(:default_helpers, nil)
   end
 
   @doc false
-  def config do
+  defp config do
     Application.get_env(:rummage_phoenix, Rummage.Phoenix, [])
   end
 
-  @doc false
+  @doc """
+  `config` returns the value associated with the given `key` and returns `default` if
+  the value is `nil`.
+
+  ## Examples
+  Returns value corresponding to config or returns the default value:
+      iex> alias Rummage.Phoenix
+      iex> Phoenix.config(:x, "default")
+      "default"
+  """
   def config(key, default \\ nil) do
     config()
     |> Keyword.get(key, default)
     |> resolve_config(default)
   end
 
-  defp resolve_config({:system, var_name}, default) do
+  @doc """
+  `resolve_system_config` returns a system variable set up or returns the
+  specified default value
+
+  ## Examples
+  Returns value corresponding to a system variable config or returns the default value:
+      iex> alias Rummage.Phoenix
+      iex> Phoenix.resolve_system_config({:system, "some random config"}, "default")
+      "default"
+  """
+  @spec resolve_system_config(Tuple.t, term) :: {term}
+  def resolve_system_config({:system, var_name}, default) do
     System.get_env(var_name) || default
   end
 
