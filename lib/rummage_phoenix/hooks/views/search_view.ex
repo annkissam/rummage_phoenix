@@ -43,7 +43,7 @@ defmodule Rummage.Phoenix.SearchView do
         search = rummage["search"]
         sort = if rummage["sort"], do: Poison.encode!(rummage["sort"]), else: ""
         paginate = if rummage["paginate"], do: Poison.encode!(rummage["paginate"]), else: ""
-
+        button_class = Keyword.get(link_params, :button_class, "btn btn-primary")
         fields = Keyword.fetch!(link_params, :fields)
 
         form_for(conn, apply(unquote(opts[:helpers]), String.to_atom("#{unquote(opts[:struct])}_path"), [conn, :index]), [as: :rummage, method: :get], fn(f) ->
@@ -57,7 +57,7 @@ defmodule Rummage.Phoenix.SearchView do
                 inner_form(s, fields, search)
               }
               end), 1) ++
-            elem(submit("Search", class: "btn btn-primary"), 1)
+            elem(submit("Search", class: button_class), 1)
           }
         end)
       end
