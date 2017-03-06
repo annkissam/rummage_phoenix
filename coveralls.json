@@ -3,4 +3,7 @@
     "treat_no_relevant_lines_as_covered": true,
     "minimum_coverage": 100
   }
+  "skip_files": [
+    "test"
+  ]
 }
