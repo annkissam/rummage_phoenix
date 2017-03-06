@@ -39,8 +39,7 @@ defmodule Rummage.Phoenix.Mixfile do
 
   def package do
   [
-    name: :rummage_phoenix,
-    files: ["lib", "mix.exs"],
+    files: ["lib", "mix.exs",  "README.md"],
     maintainers: ["Adi Iyengar"],
     licenses: ["MIT"],
     links: %{"Github" => @url},
@@ -50,7 +49,6 @@ end
   defp deps do
     [
       {:credo, "~> 0.5", only: [:dev, :test]},
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:excoveralls, "~> 0.3", only: :test},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
@@ -71,7 +69,7 @@ end
     [
       main: "Rummage.Phoenix",
       source_url: "https://github.com/Excipients/rummage_phoenix",
-      extras: ["doc_readme.md"],
+      extras: ["doc_readme.md", "CHANGELOG.md"],
       source_ref: "v#{@version}"
     ]
   end
