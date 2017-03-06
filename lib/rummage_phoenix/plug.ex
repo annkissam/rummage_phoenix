@@ -61,8 +61,10 @@ defmodule Rummage.Phoenix.Plug do
           |> Enum.into(%{})
         )
       rummage ->
-        Map.put(params, "rummage", Enum.map(hooks, &{&1,
-            apply(String.to_atom("Elixir.Rummage.Phoenix.#{String.capitalize(&1)}Controller"), :rummage, [rummage])})
+        Map.put(params, "rummage",
+          Enum.map(hooks, &{&1,
+            apply(String.to_atom("Elixir.Rummage.Phoenix.#{String.capitalize(&1)}Controller"),
+              :rummage, [rummage])})
           |> Enum.into(%{})
         )
     end
