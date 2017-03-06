@@ -36,7 +36,7 @@ defmodule Rummage.Phoenix.SortView do
   [README](https://github.com/Excipients/rummage_phoenix) for more details
 
   ```elixir
-  sort_link(:title, @conn, @rummage)
+  <%= sort_link @conn, @rummage, [field: :name, ci: true] %>
   ```
   """
   defmacro __using__(opts) do

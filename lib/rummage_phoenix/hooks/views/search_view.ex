@@ -34,7 +34,12 @@ defmodule Rummage.Phoenix.SearchView do
   [README](https://github.com/Excipients/rummage_phoenix) for more details
 
   ```elixir
-  search_form(@conn, [:title], @rummage)
+  <%= search_form(@conn, @rummage, [fields:
+  [
+    name: %{label: "Search by Product Name", search_type: "ilike"},
+    price: %{label: "Search by Price", search_type: "eq"},
+  ], button_class: "btn",
+  ]) %>
   ```
   """
   defmacro __using__(opts) do
