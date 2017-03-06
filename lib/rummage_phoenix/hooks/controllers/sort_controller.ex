@@ -14,42 +14,42 @@ defmodule Rummage.Phoenix.SortController do
   ## Examples
   When `rummage` passed is an empty `Map`, it returns
   and empty `Map`:
-    iex> alias Rummage.Phoenix.SortController
-    iex> rummage = %{}
-    iex> SortController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.SortController
+      iex> rummage = %{}
+      iex> SortController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   doesn't have a `"sort"` key, it returns
   and empty `Map`:
-    iex> alias Rummage.Phoenix.SortController
-    iex> rummage = %{"pizza" => "eat"}
-    iex> SortController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.SortController
+      iex> rummage = %{"pizza" => "eat"}
+      iex> SortController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"sort"` key is an empty `String`,
   it returns and empty `Map`:
-    iex> alias Rummage.Phoenix.SortController
-    iex> rummage = %{"sort" => ""}
-    iex> SortController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.SortController
+      iex> rummage = %{"sort" => ""}
+      iex> SortController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"sort"` key is a non-empty `String`,
   it decodes the value returns it:
-    iex> alias Rummage.Phoenix.SortController
-    iex> rummage = %{"sort" => "1"}
-    iex> SortController.rummage(rummage)
-    1
+      iex> alias Rummage.Phoenix.SortController
+      iex> rummage = %{"sort" => "1"}
+      iex> SortController.rummage(rummage)
+      1
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"sort"` key is a `Map`,
   it returns the `Map` itself:
-    iex> alias Rummage.Phoenix.SortController
-    iex> rummage = %{"sort" => %{"h" => "i"}}
-    iex> SortController.rummage(rummage)
-    %{"h" => "i"}
+      iex> alias Rummage.Phoenix.SortController
+      iex> rummage = %{"sort" => %{"h" => "i"}}
+      iex> SortController.rummage(rummage)
+      %{"h" => "i"}
   """
   def rummage(rummage) do
     sort_params = Map.get(rummage, "sort")

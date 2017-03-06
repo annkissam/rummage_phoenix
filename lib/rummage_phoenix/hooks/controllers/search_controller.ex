@@ -14,36 +14,36 @@ defmodule Rummage.Phoenix.SearchController do
   ## Examples
   When `rummage` passed is an empty `Map`, it returns
   and empty `Map`:
-    iex> alias Rummage.Phoenix.SearchController
-    iex> rummage = %{}
-    iex> SearchController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.SearchController
+      iex> rummage = %{}
+      iex> SearchController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   doesn't have a `"search"` key, it returns
   and empty `Map`:
-    iex> alias Rummage.Phoenix.SearchController
-    iex> rummage = %{"pizza" => "eat"}
-    iex> SearchController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.SearchController
+      iex> rummage = %{"pizza" => "eat"}
+      iex> SearchController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"search"` key is an empty `String`,
   it returns and empty `Map`:
-    iex> alias Rummage.Phoenix.SearchController
-    iex> rummage = %{"search" => ""}
-    iex> SearchController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.SearchController
+      iex> rummage = %{"search" => ""}
+      iex> SearchController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"search"` key is a `Map`,
   it returns the `Map` itself, with association converted
   to a one element list (This will change in future when `Rumamge.Phoenix`
   will have support for deeper `associations`:
-    iex> alias Rummage.Phoenix.SearchController
-    iex> rummage = %{"search" => %{"field" => %{"assoc" => "assoc"}}}
-    iex> SearchController.rummage(rummage)
-    %{"field" => %{"assoc" => ["assoc"]}}
+      iex> alias Rummage.Phoenix.SearchController
+      iex> rummage = %{"search" => %{"field" => %{"assoc" => "assoc"}}}
+      iex> SearchController.rummage(rummage)
+      %{"field" => %{"assoc" => ["assoc"]}}
   """
   def rummage(rummage) do
     search_params = Map.get(rummage, "search")

@@ -14,42 +14,42 @@ defmodule Rummage.Phoenix.PaginateController do
   ## Examples
   When `rummage` passed is an empty `Map`, it returns
   and empty `Map`:
-    iex> alias Rummage.Phoenix.PaginateController
-    iex> rummage = %{}
-    iex> PaginateController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.PaginateController
+      iex> rummage = %{}
+      iex> PaginateController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   doesn't have a `"paginate"` key, it returns
   and empty `Map`:
-    iex> alias Rummage.Phoenix.PaginateController
-    iex> rummage = %{"pizza" => "eat"}
-    iex> PaginateController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.PaginateController
+      iex> rummage = %{"pizza" => "eat"}
+      iex> PaginateController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"paginate"` key is an empty `String`,
   it returns and empty `Map`:
-    iex> alias Rummage.Phoenix.PaginateController
-    iex> rummage = %{"paginate" => ""}
-    iex> PaginateController.rummage(rummage)
-    %{}
+      iex> alias Rummage.Phoenix.PaginateController
+      iex> rummage = %{"paginate" => ""}
+      iex> PaginateController.rummage(rummage)
+      %{}
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"paginate"` key is a non-empty `String`,
   it decodes the value returns it:
-    iex> alias Rummage.Phoenix.PaginateController
-    iex> rummage = %{"paginate" => "1"}
-    iex> PaginateController.rummage(rummage)
-    1
+      iex> alias Rummage.Phoenix.PaginateController
+      iex> rummage = %{"paginate" => "1"}
+      iex> PaginateController.rummage(rummage)
+      1
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"paginate"` key is a `Map`,
   it returns the `Map` itself:
-    iex> alias Rummage.Phoenix.PaginateController
-    iex> rummage = %{"paginate" => %{"h" => "i"}}
-    iex> PaginateController.rummage(rummage)
-    %{"h" => "i"}
+      iex> alias Rummage.Phoenix.PaginateController
+      iex> rummage = %{"paginate" => %{"h" => "i"}}
+      iex> PaginateController.rummage(rummage)
+      %{"h" => "i"}
   """
   def rummage(rummage) do
     paginate_params = Map.get(rummage, "paginate")
