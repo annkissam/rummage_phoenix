@@ -44,6 +44,25 @@ This is [available in Hex](https://hexdocs.pm/rummage_phoenix/), the package can
     end
     ```
 
+## Blogs
+
+### Current Blogs:
+
+  - [Rummage Demo & Basics](https://medium.com/@aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-1-933106ec50ca#.der0yrnvq)
+  - [Using Rummage.Ecto](https://medium.com/@aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-2-8e36558984c2#.vviioi5ia)
+  - [Using Rummage.Phoenix](https://medium.com/@aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-3-7cf5023bc226#.q08478ud2)
+
+### Coming up next:
+
+  - Using Rummage.Phoenix 2
+  - Using the Rummage Search hook
+  - Using the Rummage Sort hook
+  - Writing a Custom Rummage.Ecto Hook
+  - Writing a Custom Rummage.Phoenix HTML helper
+  - Using Rummage with other Libraries: Kerosene
+  - Using Rummage with other Libraries: Scrivener
+
+
 ## Configuration (Optional, Not the preferred way to set `default_per_page`)
 
 `Rumamge.Phoenix` can be configured globally with a `default_per_page` value (which can be overriden for a model).
@@ -138,7 +157,7 @@ Please check the [screenshots](#more-screenshots) below for details
 
   Reload and this is how your page should look:
 
-  ![phoenix pagination](src/images/rummage_phoenix_pagination.png)
+  ![phoenix pagination](src/images_1.0/RummagePhoenixPagination.gif)
 
 
   - #### Sorting:
@@ -165,7 +184,7 @@ Please check the [screenshots](#more-screenshots) below for details
 
   Reload and this is how your page should look with sortable links instead of just table headers:
 
-  ![phoenix sorting](src/images/rummage_phoenix_sorting.png)
+  ![phoenix sorting](src/images_1.0/RummagePhoenixSort.gif)
 
   **NOTE: Currently working on adding better elements to the views, soon the text
   arrow in the sort links will be replaced by an icon**
@@ -192,13 +211,13 @@ Please check the [screenshots](#more-screenshots) below for details
   ```
 
   Reload and your page should look somewhat like this:
-  ![phoenix searching](src/images/rummage_phoenix_searching.png)
+  ![phoenix searching](src/images_1.0/RummagePhoenixSearch.gif)
 
   - #### ALL TOGETHER:
   The best part about `Rummage` is that all the three hooks/operations integrate seamlessly without affecting each other's functionality
   and therefore, you have a page looking somewhat like this:
 
-  ![phoenix all together](src/images/all_together.png)
+  ![phoenix all together](src/images_1.0/RummagePhoenixSearch.gif)
 
 ## More Screenshots
 
@@ -245,13 +264,6 @@ Please check the [screenshots](#more-screenshots) below for details
 ### After Search View:
 
 ![phoenix searching](src/images/rummage_phoenix_searching.png)
-
-## Coming up Next:
-
-- Better sort links using icons instead of arrows.
-- Not having to pass repo, helpers and model while using view, if default.
-- Not having to pass repo, helpers and model while using controller, if default.
-- A Video with the demo.
 
 
 
