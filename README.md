@@ -1,12 +1,12 @@
 # Rummage.Phoenix
 
-[![Build Status](https://travis-ci.org/Excipients/rummage_phoenix.svg?branch=master)](https://travis-ci.org/Excipients/rummage_phoenix)
-[![Coverage Status](https://coveralls.io/repos/github/Excipients/rummage_phoenix/badge.svg?branch=master)](https://coveralls.io/github/Excipients/rummage_phoenix?branch=master)
+[![Build Status](https://travis-ci.org/aditya7iyengar/rummage_phoenix.svg?branch=master)](https://travis-ci.org/aditya7iyengar/rummage_phoenix)
+[![Coverage Status](https://coveralls.io/repos/github/aditya7iyengar/rummage_phoenix/badge.svg?branch=master)](https://coveralls.io/github/aditya7iyengar/rummage_phoenix?branch=master)
 [![Hex Version](http://img.shields.io/hexpm/v/rummage_phoenix.svg?style=flat)](https://hex.pm/packages/rummage_phoenix)
 [![hex.pm downloads](https://img.shields.io/hexpm/dt/rummage_phoenix.svg)](https://hex.pm/packages/rummage_phoenix)
 [![Hex docs](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/rummage_phoenix)
-[![docs](https://inch-ci.org/github/Excipients/rummage_phoenix.svg)](http://inch-ci.org/github/Excipients/rummage_phoenix)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Excipients/rummage_phoenix/master/LICENSE)
+[![docs](https://inch-ci.org/github/aditya7iyengar/rummage_phoenix.svg)](http://inch-ci.org/github/aditya7iyengar/rummage_phoenix)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/aditya7iyengar/rummage_phoenix/master/LICENSE)
 
 `Rummage.Phoenix` is a support framework for `Phoenix` that can be used to manipulate `Phoenix` collections and `Ecto`
 models with Search, Sort and Paginate operations.
