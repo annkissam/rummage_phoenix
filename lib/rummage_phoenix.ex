@@ -21,14 +21,14 @@ defmodule Rummage.Phoenix do
   in the `config.exs` file
 
   ## Examples
-  Returns default `Repo` set in the config
-  (`2 in `rummage_ecto`'s test env):
+  Returns default `per_page` set in the config
+  (`2 in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_per_page
       2
   """
   def default_per_page do
-    config(:default_per_page, "10")
+    config(:default_per_page, Rummage.Ecto.Config.default_per_page)
   end
 
   @doc """
@@ -36,8 +36,8 @@ defmodule Rummage.Phoenix do
   in the `config.exs` file
 
   ## Examples
-  Returns default `Repo` set in the config
-  (`2 in `rummage_ecto`'s test env):
+  Returns default `heloers` set in the config
+  (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_helpers
       Rummage.Phoenix.Router.Helpers
