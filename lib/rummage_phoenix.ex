@@ -28,7 +28,7 @@ defmodule Rummage.Phoenix do
       2
   """
   def default_per_page do
-    config(:default_per_page, "10")
+    config(:default_per_page, Rummage.Ecto.Config.default_per_page)
   end
 
   @doc """
