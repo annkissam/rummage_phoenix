@@ -40,11 +40,11 @@ defmodule Rummage.Phoenix.PaginateView do
   defmacro __using__(opts) do
     quote do
       def pagination_link(conn, rummage) do
-        pagiante_params = rummage["paginate"]
+        paginate_params = rummage["paginate"]
 
-        per_page = String.to_integer(pagiante_params["per_page"] || Rummage.Phoenix.default_per_page)
-        page = String.to_integer(pagiante_params["page"] || "1")
-        max_page = String.to_integer(pagiante_params["max_page"] || "1")
+        per_page = String.to_integer(paginate_params["per_page"] || Rummage.Phoenix.default_per_page)
+        page = String.to_integer(paginate_params["page"] || "1")
+        max_page = String.to_integer(paginate_params["max_page"] || "1")
 
         if max_page > 1 do
           raw """
@@ -56,6 +56,59 @@ defmodule Rummage.Phoenix.PaginateView do
           """
         else
           ""
+        end
+      end
+
+      def pagination_link(conn, slugs, params, rummage) do
+        paginate_params = rummage["paginate"]
+
+        per_page = String.to_integer(paginate_params["per_page"] || Rummage.Phoenix.default_per_page)
+        page = String.to_integer(paginate_params["page"] || "1")
+        max_page = String.to_integer(paginate_params["max_page"] || "1")
+
+        if max_page > 1 do
+          raw """
+          <nav aria-label="...">
+          <ul class="pagination">
+            #{conn |> get_raw_links(slugs, params, rummage, per_page, page, max_page) |> Enum.join("\n")}
+          </ul>
+          </nav>
+          """
+        else
+          ""
+        end
+      end
+
+      defp get_helper_params(conn, slugs, params, rummage, per_page, page) do
+        slugged = [conn, :index | slugs]
+        rummage_page = %{rummage: Map.put(rummage, "paginate", %{"per_page"=> per_page, "page"=> page})}
+        full_params = Map.merge(rummage_page, params)
+        helper_params_splat = slugged ++ [full_params]
+      end
+
+      defp get_raw_links(conn, slugs, params, rummage, per_page, page, max_page) do
+        raw_links = cond do
+          page <= 1 ->
+            [raw_disabled_link("Previous")]
+          true ->
+            [raw_link("Previous", apply(unquote(opts[:helpers]),
+              String.to_atom("#{unquote(opts[:struct])}_path"), get_helper_params(conn, slugs, params, rummage, per_page, page - 1)))]
+        end
+
+        raw_links = raw_links ++ Enum.map(1..max_page, fn(x) ->
+          case page == x do
+            true -> raw_active_link(x)
+            _ -> raw_link(x, apply(unquote(opts[:helpers]),
+              String.to_atom("#{unquote(opts[:struct])}_path"), get_helper_params(conn, slugs, params, rummage, per_page, x)))
+          end
+        end)
+
+        raw_links ++ cond do
+          page == max_page ->
+            [raw_disabled_link("Next")]
+          true ->
+            [raw_link("Next", apply(unquote(opts[:helpers]),
+              String.to_atom("#{unquote(opts[:struct])}_path"), get_helper_params(conn, slugs, params, rummage, per_page, page + 1)))]
         end
       end
 
