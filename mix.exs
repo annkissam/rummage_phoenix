@@ -33,6 +33,8 @@ defmodule Rummage.Phoenix.Mixfile do
     [
       applications: [
         :logger,
+        :phoenix_html,
+        :phoenix,
       ],
     ]
   end
@@ -53,6 +55,7 @@ end
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
       {:phoenix, "~> 1.2.1"},
+      {:phoenix_html, "~> 2.6"},
       {:postgrex, ">= 0.0.0", only: [:test]},
       {:rummage_ecto, "~> 1.1.0"},
     ]
