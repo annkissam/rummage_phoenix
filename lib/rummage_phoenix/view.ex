@@ -17,39 +17,40 @@ defmodule Rummage.Phoenix.View do
   """
   defmacro __using__(opts) do
     quote do
-      import Rummage.Phoenix.PaginateView
       use Rummage.Phoenix.SearchView, struct: struct(), helpers: helpers()
 
       use Rummage.Phoenix.SortView, struct: struct(), helpers: helpers()
 
-      defp helpers do
-        unquote(opts[:helpers]) ||
-        Rummage.Phoenix.default_helpers ||
-        make_helpers_name_from_topmost_namespace
-      end
+      import Rummage.Phoenix.PaginateView
 
-      defp make_helpers_name_from_topmost_namespace do
-        "#{__MODULE__}"
-        |> String.split(".")
-        |> Enum.at(1)
-        |> (& "Elixir." <> &1 <> ".Router.Helpers").()
-        |> String.to_atom
-      end
+      # defp helpers do
+      #   unquote(opts[:helpers]) ||
+      #   Rummage.Phoenix.default_helpers ||
+      #   make_helpers_name_from_topmost_namespace
+      # end
 
-      defp struct do
-        unquote(opts[:struct]) ||
-        make_struct_name_from_bottommost_namespace
-      end
+      # defp make_helpers_name_from_topmost_namespace do
+      #   "#{__MODULE__}"
+      #   |> String.split(".")
+      #   |> Enum.at(1)
+      #   |> (& "Elixir." <> &1 <> ".Router.Helpers").()
+      #   |> String.to_atom
+      # end
 
-      defp make_struct_name_from_bottommost_namespace do
-        "#{__MODULE__}"
-        |> String.split(".")
-        |> Enum.at(-1)
-        |> String.split("View")
-        |> Enum.at(0)
-        |> String.downcase
-        |> String.to_atom
-      end
+      # defp struct do
+      #   unquote(opts[:struct]) ||
+      #   make_struct_name_from_bottommost_namespace
+      # end
+
+      # defp make_struct_name_from_bottommost_namespace do
+      #   "#{__MODULE__}"
+      #   |> String.split(".")
+      #   |> Enum.at(-1)
+      #   |> String.split("View")
+      #   |> Enum.at(0)
+      #   |> String.downcase
+      #   |> String.to_atom
+      # end
     end
   end
 end
