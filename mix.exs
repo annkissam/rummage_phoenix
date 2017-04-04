@@ -1,7 +1,7 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "1.0.0"
+  @version "1.1.0"
   @url "https://github.com/Excipients/rummage_phoenix"
 
   def project do
@@ -54,7 +54,7 @@ end
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
       {:phoenix, "~> 1.2.1"},
       {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, "~> 1.0.0"},
+      {:rummage_ecto, "~> 1.1.0"},
     ]
   end
 

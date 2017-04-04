@@ -17,11 +17,10 @@ defmodule Rummage.Phoenix.View do
   """
   defmacro __using__(opts) do
     quote do
+      import Rummage.Phoenix.PaginateView
       use Rummage.Phoenix.SearchView, struct: struct(), helpers: helpers()
 
       use Rummage.Phoenix.SortView, struct: struct(), helpers: helpers()
-
-      use Rummage.Phoenix.PaginateView, struct: struct(), helpers: helpers()
 
       defp helpers do
         unquote(opts[:helpers]) ||
