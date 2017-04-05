@@ -17,17 +17,19 @@ defmodule Rummage.Phoenix.View do
   """
   defmacro __using__(opts) do
     quote do
+      import Rummage.Phoenix.ViewResolver
+
       use Rummage.Phoenix.SearchView, struct: struct(), helpers: helpers()
 
       use Rummage.Phoenix.SortView, struct: struct(), helpers: helpers()
 
       import Rummage.Phoenix.PaginateView
 
-      # defp helpers do
-      #   unquote(opts[:helpers]) ||
-      #   Rummage.Phoenix.default_helpers ||
-      #   make_helpers_name_from_topmost_namespace
-      # end
+      defp helpers do
+        unquote(opts[:helpers]) ||
+        Rummage.Phoenix.default_helpers ||
+        make_helpers_name_from_topmost_namespace
+      end
 
       # defp make_helpers_name_from_topmost_namespace do
       #   "#{__MODULE__}"
@@ -37,10 +39,10 @@ defmodule Rummage.Phoenix.View do
       #   |> String.to_atom
       # end
 
-      # defp struct do
-      #   unquote(opts[:struct]) ||
-      #   make_struct_name_from_bottommost_namespace
-      # end
+      defp struct do
+        unquote(opts[:struct]) ||
+        make_struct_name_from_bottommost_namespace
+      end
 
       # defp make_struct_name_from_bottommost_namespace do
       #   "#{__MODULE__}"
