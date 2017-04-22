@@ -43,7 +43,10 @@ defmodule Rummage.Phoenix.PaginateView do
   def pagination_link(conn, rummage, opts \\ []) do
     paginate_params = rummage["paginate"]
 
-    per_page = String.to_integer(paginate_params["per_page"] || Rummage.Phoenix.default_per_page)
+    per_page = paginate_params["per_page"]
+      |> (fn(x) -> is_nil(x) && Rummage.Phoenix.default_per_page || String.to_integer(x) end).()
+
+
     page = String.to_integer(paginate_params["page"] || "1")
     max_page = String.to_integer(paginate_params["max_page"] || "1")
 
