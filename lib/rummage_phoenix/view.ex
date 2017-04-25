@@ -35,12 +35,12 @@ defmodule Rummage.Phoenix.View do
       defp helpers do
         unquote(opts[:helpers]) ||
         Rummage.Phoenix.default_helpers ||
-        ViewResolver.make_helpers_name_from_topmost_namespace
+        ViewResolver.make_helpers_name_from_topmost_namespace(__MODULE__)
       end
 
       defp struct do
         unquote(opts[:struct]) ||
-        ViewResolver.make_struct_name_from_bottommost_namespace
+        ViewResolver.make_struct_name_from_bottommost_namespace(__MODULE__)
       end
     end
   end
