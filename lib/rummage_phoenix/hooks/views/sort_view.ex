@@ -110,10 +110,10 @@ defmodule Rummage.Phoenix.SortView do
         cond do
           [] != assoc -> {"#{field}.asc", nil}
 
-          Regex.match?(~r/#{field}.asc+$/, current_sort_field) ->
+          Regex.match?(~r/^#{field}.asc+$/, current_sort_field) ->
             {"#{field}.desc", "desc"}
 
-          Regex.match?(~r/#{field}.desc+$/, current_sort_field) ->
+          Regex.match?(~r/^#{field}.desc+$/, current_sort_field) ->
             {"#{field}.asc", "asc"}
 
           true -> {"#{field}.asc", nil}
@@ -129,10 +129,10 @@ defmodule Rummage.Phoenix.SortView do
         cond do
           current_assoc != assoc -> {"#{field}.asc", nil}
 
-          Regex.match?(~r/#{field}.asc+$/, current_sort_field) ->
+          Regex.match?(~r/^#{field}.asc+$/, current_sort_field) ->
             {"#{field}.desc", "desc"}
 
-          Regex.match?(~r/#{field}.desc+$/, current_sort_field) ->
+          Regex.match?(~r/^#{field}.desc+$/, current_sort_field) ->
             {"#{field}.asc", "asc"}
 
           true -> {"#{field}.asc", nil}
