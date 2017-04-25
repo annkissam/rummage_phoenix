@@ -17,28 +17,30 @@ defmodule Rummage.Phoenix.View do
   """
   defmacro __using__(opts) do
     quote do
-      import Rummage.Phoenix.ViewResolver
-
-      use Rummage.Phoenix.SearchView, struct: struct(), helpers: helpers()
-
-      use Rummage.Phoenix.SortView, struct: struct(), helpers: helpers()
-
-      require Rummage.Phoenix.PaginateView
-      alias Rummage.Phoenix.PaginateView
+      require Rummage.Phoenix.{PaginateView, SearchView, SortView, ViewResolver}
+      alias Rummage.Phoenix.{PaginateView, SearchView, SortView, ViewResolver}
 
       def pagination_link(conn, rummage, opts \\ []) do
         PaginateView.pagination_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
       end
 
+      def sort_link(conn, rummage, link_params, opts \\ []) do
+        SortView.sort_link(conn, rummage, link_params, opts ++ [struct: struct(), helpers: helpers()])
+      end
+
+      def search_form(conn, rummage, link_params, opts \\ []) do
+        SearchView.search_form(conn, rummage, link_params, opts ++ [struct: struct(), helpers: helpers()])
+      end
+
       defp helpers do
         unquote(opts[:helpers]) ||
         Rummage.Phoenix.default_helpers ||
-        make_helpers_name_from_topmost_namespace
+        ViewResolver.make_helpers_name_from_topmost_namespace
       end
 
       defp struct do
         unquote(opts[:struct]) ||
-        make_struct_name_from_bottommost_namespace
+        ViewResolver.make_struct_name_from_bottommost_namespace
       end
     end
   end
