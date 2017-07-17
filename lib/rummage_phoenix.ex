@@ -46,6 +46,36 @@ defmodule Rummage.Phoenix do
     config(:default_helpers, nil)
   end
 
+  @doc """
+  `:default_theme` can also be set at run time
+  in the `config.exs` file
+
+  ## Examples
+  Returns default `heloers` set in the config
+  (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
+      iex> alias Rummage.Phoenix
+      iex> Phoenix.default_theme
+      Rummage.Phoenix.Router.Helpers
+  """
+  def default_theme do
+    config(:default_theme, :bootstrap)
+  end
+
+  @doc """
+  `:default_max_page_links` can also be set at run time
+  in the `config.exs` file
+
+  ## Examples
+  Returns default `heloers` set in the config
+  (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
+      iex> alias Rummage.Phoenix
+      iex> Phoenix.default_max_page_links
+      Rummage.Phoenix.Router.Helpers
+  """
+  def default_max_page_links do
+    config(:default_max_page_links, 5)
+  end
+
   @doc false
   defp config do
     Application.get_env(:rummage_phoenix, Rummage.Phoenix, [])
