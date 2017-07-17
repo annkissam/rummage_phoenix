@@ -57,12 +57,13 @@ defmodule Rummage.Phoenix.PaginateView do
     page = String.to_integer(paginate_params["page"] || "1")
     per_page = String.to_integer(paginate_params["per_page"] || "1")
     max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
+    label = opts[:first_label] || "First"
 
     case page - 1 <= (max_page_links / 2) do
-      true -> page_link "#", :disabled, do: "First"
+      true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, 1, opts)]), do: "First"
+          transform_params(rummage, per_page, 1, opts)]), do: label
     end
   end
 
@@ -71,12 +72,13 @@ defmodule Rummage.Phoenix.PaginateView do
 
     page = String.to_integer(paginate_params["page"] || "1")
     per_page = String.to_integer(paginate_params["per_page"] || "1")
+    label = opts[:previous_label] || "Previous"
 
     case page <= 1 do
-      true -> page_link "#", :disabled, do: "Previous"
+      true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, page - 1, opts)]), do: "Previous"
+          transform_params(rummage, per_page, page - 1, opts)]), do: label
     end
   end
 
@@ -113,12 +115,13 @@ defmodule Rummage.Phoenix.PaginateView do
     page = String.to_integer(paginate_params["page"] || "1")
     per_page = String.to_integer(paginate_params["per_page"] || "1")
     max_page = String.to_integer(paginate_params["max_page"] || "1")
+    label = opts[:next_label] || "Next"
 
     case page >= max_page do
-      true -> page_link "#", :disabled, do: "Next"
+      true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, page + 1, opts)]), do: "Next"
+          transform_params(rummage, per_page, page + 1, opts)]), do: label
     end
   end
 
@@ -129,12 +132,13 @@ defmodule Rummage.Phoenix.PaginateView do
     per_page = String.to_integer(paginate_params["per_page"] || "1")
     max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
     max_page = String.to_integer(paginate_params["max_page"] || "1")
+    label = opts[:last_label] || "Last"
 
     case page >= (max_page - max_page_links / 2) do
-      true -> page_link "#", :disabled, do: "Last"
+      true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, max_page, opts)]), do: "Last"
+          transform_params(rummage, per_page, max_page, opts)]), do: label
     end
   end
 
