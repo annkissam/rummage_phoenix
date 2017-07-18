@@ -49,4 +49,35 @@ defmodule Rummage.Phoenix.BootstrapAdapter do
       """
     end
   end
+
+  defmacro sort_text(url, do: html) do
+    quote do
+      raw """
+      <a class="page-link" href="#{unquote(url)}">
+        #{unquote(html)}
+      </a>
+      """
+    end
+  end
+
+  def sort_text_or_image(url, opts, name) do
+    base = """
+    <a class="page-link" href="#{url}">
+    #{name}
+    """
+
+    name = cond do
+      opts[:img] ->
+        """
+        <img src="#{opts[:img]}"
+        height="#{opts[:img_ht] || 10}" width="#{opts[:img_wd] || 10}">
+        </a>
+        """
+      opts[:text] ->
+        "#{opts[:text]} </a>"
+      true -> "</a>"
+    end
+
+    base <> name
+  end
 end
