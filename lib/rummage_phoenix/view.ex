@@ -24,8 +24,8 @@ defmodule Rummage.Phoenix.View do
         PaginateView.pagination_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
       end
 
-      def sort_link(conn, rummage, link_params, opts \\ []) do
-        SortView.sort_link(conn, rummage, link_params, opts ++ [struct: struct(), helpers: helpers()])
+      def sort_link(conn, rummage, opts \\ []) do
+        SortView.sort_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
       end
 
       def search_form(conn, rummage, link_params, opts \\ []) do
