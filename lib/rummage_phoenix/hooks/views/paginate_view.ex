@@ -21,9 +21,9 @@ defmodule Rummage.Phoenix.PaginateView do
   ```
 
   """
+
   use Rummage.Phoenix.ThemeAdapter
   import Phoenix.HTML
-  alias Rummage.Phoenix.{BootstrapAdapter}
 
   @doc """
   This macro includes the helper functions for pagination
@@ -51,6 +51,10 @@ defmodule Rummage.Phoenix.PaginateView do
     end
   end
 
+  # def per_page_link(conn, rummage, opts \\ []) do
+  #   form_for(conn, index_path(opts, [conn, :index]))
+  # end
+
   defp first_page_link(conn, rummage, opts) do
     paginate_params = rummage["paginate"]
 
@@ -59,7 +63,7 @@ defmodule Rummage.Phoenix.PaginateView do
     max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
     label = opts[:first_label] || "First"
 
-    case page - 1 <= (max_page_links / 2) do
+    case page == 1 do
       true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
@@ -134,7 +138,7 @@ defmodule Rummage.Phoenix.PaginateView do
     max_page = String.to_integer(paginate_params["max_page"] || "1")
     label = opts[:last_label] || "Last"
 
-    case page >= (max_page - max_page_links / 2) do
+    case page == max_page do
       true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
@@ -161,8 +165,6 @@ defmodule Rummage.Phoenix.PaginateView do
     apply(helpers, path_function_name, params)
   end
 
-  defp per_page(pagination_params) do
-    per_page = paginate_params["per_page"]
-      |> (&(is_nil(&1) && Rummage.Phoenix.default_per_page || String.to_integer(&1))).()
-  end
+  defp per_page(%{"per_page" => per_page}), do: String.to_integer(per_page)
+  defp per_page(_paginate_params), do: Rummage.Phoenix.default_per_page
 end

@@ -76,7 +76,10 @@ defmodule Rummage.Phoenix.SearchView do
       field_params = elem(field, 1)
       label = field_params[:label] || "Search by #{Phoenix.Naming.humanize(field_name)}"
       search_type = field_params[:search_type] || "like"
-      assoc = field_params[:assoc] || []
+      assoc = case field_params[:assoc] do
+          nil -> ""
+          assocs -> Enum.join(assocs, " -> ")
+        end
 
       elem(label(s, field_name, label, class: "control-label"), 1) ++
       elem(inputs_for(s, field_name, fn(e) ->

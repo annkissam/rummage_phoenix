@@ -65,7 +65,7 @@ defmodule Rummage.Phoenix.SearchController do
     case params["assoc"] do
       nil -> {field, Map.put(params, "assoc", [])}
       assoc when assoc == "" -> {field, Map.put(params, "assoc", [])}
-      assoc when is_binary(assoc) -> {field, Map.put(params, "assoc", [assoc])}
+      assoc when is_binary(assoc) -> {field, Map.put(params, "assoc", String.split(assoc, " -> "))}
       _ -> {field, params}
     end
   end
