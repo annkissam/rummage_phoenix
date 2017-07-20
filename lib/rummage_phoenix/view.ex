@@ -17,39 +17,30 @@ defmodule Rummage.Phoenix.View do
   """
   defmacro __using__(opts) do
     quote do
-      use Rummage.Phoenix.SearchView, struct: struct(), helpers: helpers()
+      require Rummage.Phoenix.{PaginateView, SearchView, SortView, ViewResolver}
+      alias Rummage.Phoenix.{PaginateView, SearchView, SortView, ViewResolver}
 
-      use Rummage.Phoenix.SortView, struct: struct(), helpers: helpers()
+      def pagination_link(conn, rummage, opts \\ []) do
+        PaginateView.pagination_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+      end
 
-      use Rummage.Phoenix.PaginateView, struct: struct(), helpers: helpers()
+      def sort_link(conn, rummage, opts \\ []) do
+        SortView.sort_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+      end
+
+      def search_form(conn, rummage, link_params, opts \\ []) do
+        SearchView.search_form(conn, rummage, link_params, opts ++ [struct: struct(), helpers: helpers()])
+      end
 
       defp helpers do
         unquote(opts[:helpers]) ||
         Rummage.Phoenix.default_helpers ||
-        make_helpers_name_from_topmost_namespace
-      end
-
-      defp make_helpers_name_from_topmost_namespace do
-        "#{__MODULE__}"
-        |> String.split(".")
-        |> Enum.at(1)
-        |> (& "Elixir." <> &1 <> ".Router.Helpers").()
-        |> String.to_atom
+        ViewResolver.make_helpers_name_from_topmost_namespace(__MODULE__)
       end
 
       defp struct do
         unquote(opts[:struct]) ||
-        make_struct_name_from_bottommost_namespace
-      end
-
-      defp make_struct_name_from_bottommost_namespace do
-        "#{__MODULE__}"
-        |> String.split(".")
-        |> Enum.at(-1)
-        |> String.split("View")
-        |> Enum.at(0)
-        |> String.downcase
-        |> String.to_atom
+        ViewResolver.make_struct_name_from_bottommost_namespace(__MODULE__)
       end
     end
   end

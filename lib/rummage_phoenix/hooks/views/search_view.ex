@@ -20,7 +20,10 @@ defmodule Rummage.Phoenix.SearchView do
     end
     ```
 
-    """
+  """
+
+  import Phoenix.HTML
+  import Phoenix.HTML.Form
 
   @doc """
   This macro includes the helpers functions for searching.
@@ -42,52 +45,51 @@ defmodule Rummage.Phoenix.SearchView do
   ]) %>
   ```
   """
-  defmacro __using__(opts) do
-    quote do
-      def search_form(conn, rummage, link_params) do
-        search = rummage["search"]
-        sort = if rummage["sort"], do: Poison.encode!(rummage["sort"]), else: ""
-        paginate = if rummage["paginate"], do: Poison.encode!(rummage["paginate"]), else: ""
+  def search_form(conn, rummage, link_params, opts \\ []) do
+    search = rummage["search"]
+    sort = if rummage["sort"], do: Poison.encode!(rummage["sort"]), else: ""
+    paginate = if rummage["paginate"], do: Poison.encode!(rummage["paginate"]), else: ""
 
-        button_class = Keyword.get(link_params, :button_class, "btn btn-primary")
-        button_label = Keyword.get(link_params, :button_label, "Search")
-        fields = Keyword.fetch!(link_params, :fields)
+    button_class = Keyword.get(link_params, :button_class, "btn btn-primary")
+    button_label = Keyword.get(link_params, :button_label, "Search")
+    fields = Keyword.fetch!(link_params, :fields)
 
-        form_for(conn, apply(unquote(opts[:helpers]), String.to_atom("#{unquote(opts[:struct])}_path"), [conn, :index]), [as: :rummage, method: :get], fn(f) ->
+    form_for(conn, apply(opts[:helpers], String.to_atom("#{opts[:struct]}_path"), [conn, :index]), [as: :rummage, method: :get], fn(f) ->
+      {
+        :safe,
+        elem(hidden_input(f, :sort, value: sort, class: "form-control"), 1) ++
+        elem(hidden_input(f, :paginate, value: paginate, class: "form-control"), 1) ++
+        elem(inputs_for(f, :search, fn(s) ->
           {
             :safe,
-            elem(hidden_input(f, :sort, value: sort, class: "form-control"), 1) ++
-            elem(hidden_input(f, :paginate, value: paginate, class: "form-control"), 1) ++
-            elem(inputs_for(f, :search, fn(s) ->
-              {
-                :safe,
-                inner_form(s, fields, search)
-              }
-              end), 1) ++
-            elem(submit(raw(button_label), class: button_class), 1)
+            inner_form(s, fields, search)
           }
-        end)
-      end
+          end), 1) ++
+        elem(submit(raw(button_label), class: button_class), 1)
+      }
+    end)
+  end
 
-      defp inner_form(s, fields, search) do
-        Enum.map(fields, fn(field) ->
-          field_name = elem(field, 0)
-          field_params = elem(field, 1)
-          label = field_params[:label] || "Search by #{Phoenix.Naming.humanize(field_name)}"
-          search_type = field_params[:search_type] || "like"
-          assoc = field_params[:assoc] || []
+  defp inner_form(s, fields, search) do
+    Enum.map(fields, fn(field) ->
+      field_name = elem(field, 0)
+      field_params = elem(field, 1)
+      label = field_params[:label] || "Search by #{Phoenix.Naming.humanize(field_name)}"
+      search_type = field_params[:search_type] || "like"
+      assoc = case field_params[:assoc] do
+          nil -> ""
+          assocs -> Enum.join(assocs, " -> ")
+        end
 
-          elem(label(s, field_name, label, class: "control-label"), 1) ++
-          elem(inputs_for(s, field_name, fn(e) ->
-            {
-              :safe,
-              elem(hidden_input(e, :search_type, value: search_type, class: "form-control"), 1) ++
-              elem(hidden_input(e, :assoc, value: assoc, class: "form-control"), 1) ++
-              elem(search_input(e, :search_term, value: search[Atom.to_string(field_name)]["search_term"], class: "form-control"), 1)
-            }
-            end), 1)
-        end) |> Enum.reduce([], & &2 ++ &1)
-      end
-    end
+      elem(label(s, field_name, label, class: "control-label"), 1) ++
+      elem(inputs_for(s, field_name, fn(e) ->
+        {
+          :safe,
+          elem(hidden_input(e, :search_type, value: search_type, class: "form-control"), 1) ++
+          elem(hidden_input(e, :assoc, value: assoc, class: "form-control"), 1) ++
+          elem(search_input(e, :search_term, value: search[Atom.to_string(field_name)]["search_term"], class: "form-control"), 1)
+        }
+        end), 1)
+    end) |> Enum.reduce([], & &2 ++ &1)
   end
 end

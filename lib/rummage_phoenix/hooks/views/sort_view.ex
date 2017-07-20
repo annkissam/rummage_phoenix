@@ -24,6 +24,9 @@ defmodule Rummage.Phoenix.SortView do
 
   """
 
+  use Rummage.Phoenix.ThemeAdapter
+  import Phoenix.HTML
+
   @doc """
   This macro includes the helpers functions for sorting.
 
@@ -39,106 +42,76 @@ defmodule Rummage.Phoenix.SortView do
   <%= sort_link @conn, @rummage, [field: :name, ci: true] %>
   ```
   """
-  defmacro __using__(opts) do
-    quote do
-      def sort_link(conn, rummage, link_params) do
-        current_sort_params = rummage["sort"]
+  def sort_link(conn, rummage, opts \\ []) do
+    current_sort_params = rummage["sort"]
 
-        field = Keyword.fetch!(link_params, :field)
-        asc_sort_icon = Keyword.get(link_params, :sort_icon)
-        asc_sort_text = Keyword.get(link_params, :asc_sort_text, "↑")
-        desc_sort_icon = Keyword.get(link_params, :sort_icon)
-        desc_sort_text = Keyword.get(link_params, :desc_sort_text, "↓")
+    field = Keyword.fetch!(opts, :field)
+    asc_icon = Keyword.get(opts, :asc_icon)
+    asc_text = Keyword.get(opts, :asc_text, "↑")
+    desc_icon = Keyword.get(opts, :desc_icon)
+    desc_text = Keyword.get(opts, :desc_text, "↓")
 
+    name = opts[:name] || Phoenix.Naming.humanize(field)
+    assoc = opts[:assoc] || []
 
-        name = link_params[:name] || Phoenix.Naming.humanize(field)
-        ci = link_params[:ci] || false
-        assoc = link_params[:assoc] || []
+    {sort_field, current_order} = get_sort_field_and_current_order(current_sort_params, field, assoc)
 
-        {sort_field, current_order} = get_sort_field_and_current_order(current_sort_params, field, assoc)
+    sort_field = opts[:ci] && sort_field <> ".ci" || sort_field
 
-        sort_field = if ci, do: sort_field <> ".ci", else: sort_field
+    sort_params = %{"assoc" => assoc, "field" => sort_field}
 
-        sort_params = %{"assoc" => assoc, "field" => sort_field}
+    url = index_path(opts, [conn, :index, %{rummage: Map.put(rummage, "sort", sort_params)}])
 
-        raw link_with_icon(name, apply(unquote(opts[:helpers]),
-          String.to_atom("#{unquote(opts[:struct])}_path"), [conn, :index, %{rummage: Map.put(rummage, "sort", sort_params)}]),
-          current_order, asc_sort_icon, asc_sort_text, desc_sort_icon, desc_sort_text)
-      end
+    text = case current_order do
+      "asc" -> sort_text_or_image(url, [img: desc_icon, text: desc_text], name)
+      "desc" -> sort_text_or_image(url, [img: asc_icon, text: asc_text], name)
+      _ -> sort_text_or_image(url, [], name)
+    end
 
-      defp link_with_icon(name, url, current_order,  asc_sort_icon, asc_sort_text, desc_sort_icon, desc_sort_text) do
-        case current_order do
-          "asc" ->
-            case asc_sort_icon do
-              nil ->
-                """
-                <a class="page-link" href="#{url}">#{name} #{asc_sort_text}</a>
-                """
-              _ ->
-                """
-                <a class="page-link" href="#{url}">#{name}  <img src=\"#{asc_sort_icon}\" alt=\"#{asc_sort_text}\" title=\"#{asc_sort_text}\" height=\"10\" width=\"10\"></a>
-                """
-            end
+    sort_text url, do: text
+  end
 
-          "desc" ->
-            case desc_sort_icon do
-              nil ->
-                """
-                <a class="page-link" href="#{url}">#{name} #{desc_sort_text}</a>
-                """
-              _ ->
-                """
-                <a class="page-link" href="#{url}">#{name}  <img src=\"#{desc_sort_icon}\" alt=\"#{desc_sort_text}\" title=\"#{desc_sort_text}\" height=\"10\" width=\"10\"></a>
-                """
-            end
+  defp index_path(opts, params) do
+    helpers = opts[:helpers]
+    path_function_name = String.to_atom("#{opts[:struct]}_path")
 
-          _ ->
-            """
-            <a class="page-link" href="#{url}">#{name}</a>
-            """
-        end
-      end
+    apply(helpers, path_function_name, params)
+  end
 
-      defp get_sort_field_and_current_order(current_sort_params, field, assoc) do
-        cond do
-          current_sort_params in [nil, "", [], %{}] -> {"#{field}.asc", nil}
-          is_nil(current_sort_params["assoc"]) ->
-            current_sort_field = current_sort_params["field"]
-              |> String.split(".ci")
-              |> Enum.at(0)
+  defp get_sort_field_and_current_order(current_sort_params, field, assoc)
+  defp get_sort_field_and_current_order(c, field, _) when c in [nil, "", [], %{}], do: {"#{field}.asc", nil}
+  defp get_sort_field_and_current_order(%{"assoc" => current_assoc, "field" => current_field}, field, assoc) do
+    current_sort_field = current_field
+      |> String.split(".ci")
+      |> Enum.at(0)
 
-            cond do
-              [] != assoc -> {"#{field}.asc", nil}
+    cond do
+      current_assoc != assoc -> {"#{field}.asc", nil}
 
-              Regex.match?(~r/#{field}.asc+$/, current_sort_field) ->
-                {"#{field}.desc", "desc"}
+      Regex.match?(~r/^#{field}.asc+$/, current_sort_field) ->
+        {"#{field}.desc", "desc"}
 
-              Regex.match?(~r/#{field}.desc+$/, current_sort_field) ->
-                {"#{field}.asc", "asc"}
+      Regex.match?(~r/^#{field}.desc+$/, current_sort_field) ->
+        {"#{field}.asc", "asc"}
 
-              true -> {"#{field}.asc", nil}
-            end
+      true -> {"#{field}.asc", nil}
+    end
+  end
+  defp get_sort_field_and_current_order(%{"field" => current_field}, field, assoc) do
+    current_sort_field = current_field
+      |> String.split(".ci")
+      |> Enum.at(0)
 
-          true ->
-            current_assoc = current_sort_params["assoc"]
+    cond do
+      [] != assoc -> {"#{field}.asc", nil}
 
-            current_sort_field = current_sort_params["field"]
-              |> String.split(".ci")
-              |> Enum.at(0)
+      Regex.match?(~r/^#{field}.asc+$/, current_sort_field) ->
+        {"#{field}.desc", "desc"}
 
-            cond do
-              current_assoc != assoc -> {"#{field}.asc", nil}
+      Regex.match?(~r/^#{field}.desc+$/, current_sort_field) ->
+        {"#{field}.asc", "asc"}
 
-              Regex.match?(~r/#{field}.asc+$/, current_sort_field) ->
-                {"#{field}.desc", "desc"}
-
-              Regex.match?(~r/#{field}.desc+$/, current_sort_field) ->
-                {"#{field}.asc", "asc"}
-
-              true -> {"#{field}.asc", nil}
-            end
-        end
-      end
+      true -> {"#{field}.asc", nil}
     end
   end
 end
