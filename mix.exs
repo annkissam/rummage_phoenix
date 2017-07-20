@@ -1,14 +1,14 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "1.1.0"
-  @url "https://github.com/Excipients/rummage_phoenix"
+  @version "1.2.0"
+  @url "https://github.com/aditya7iyengar/rummage_phoenix"
 
   def project do
     [
       app: :rummage_phoenix,
       version: @version,
-      elixir: "~> 1.3",
+      elixir: "~> 1.3.4",
       deps: deps(),
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -35,6 +35,7 @@ defmodule Rummage.Phoenix.Mixfile do
         :logger,
         :phoenix_html,
         :phoenix,
+        :rummage_ecto,
       ],
     ]
   end
@@ -51,13 +52,13 @@ end
   defp deps do
     [
       {:credo, "~> 0.5", only: [:dev, :test]},
-      {:excoveralls, "~> 0.3", only: :test},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.3", only: :test},
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
       {:phoenix, "~> 1.2.1"},
       {:phoenix_html, "~> 2.6"},
       {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, "~> 1.1.0"},
+      {:rummage_ecto, "~> 1.2.0"},
     ]
   end
 
@@ -71,7 +72,7 @@ end
   def docs do
     [
       main: "Rummage.Phoenix",
-      source_url: "https://github.com/Excipients/rummage_phoenix",
+      source_url: @url,
       extras: ["doc_readme.md", "CHANGELOG.md"],
       source_ref: "v#{@version}"
     ]
