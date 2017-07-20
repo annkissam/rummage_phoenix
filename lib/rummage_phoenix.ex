@@ -55,7 +55,7 @@ defmodule Rummage.Phoenix do
   (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_theme
-      Rummage.Phoenix.Router.Helpers
+      :bootstrap
   """
   def default_theme do
     config(:default_theme, :bootstrap)
@@ -70,7 +70,7 @@ defmodule Rummage.Phoenix do
   (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_max_page_links
-      Rummage.Phoenix.Router.Helpers
+      5
   """
   def default_max_page_links do
     config(:default_max_page_links, 5)
