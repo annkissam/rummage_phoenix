@@ -1,7 +1,6 @@
 # Rummage.Phoenix
 
 [![Build Status](https://travis-ci.org/aditya7iyengar/rummage_phoenix.svg?branch=master)](https://travis-ci.org/aditya7iyengar/rummage_phoenix)
-[.]: <> ([![Coverage Status](https://coveralls.io/repos/github/aditya7iyengar/rummage_phoenix/badge.svg?branch=master)](https://coveralls.io/github/aditya7iyengar/rummage_phoenix?branch=master))
 [![Hex Version](http://img.shields.io/hexpm/v/rummage_phoenix.svg?style=flat)](https://hex.pm/packages/rummage_phoenix)
 [![hex.pm downloads](https://img.shields.io/hexpm/dt/rummage_phoenix.svg)](https://hex.pm/packages/rummage_phoenix)
 [![Hex docs](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/rummage_phoenix)
