@@ -3,7 +3,7 @@ defmodule Rummage.Phoenix.ViewResolver do
     "#{view_module}"
     |> String.split(".")
     |> Enum.at(1)
-    |> (& "Elixir." <> &1 <> ".Router.Helpers").()
+    |> (& "Elixir." <> &1 <> ".Web.Router.Helpers").()
     |> String.to_atom
   end
 
