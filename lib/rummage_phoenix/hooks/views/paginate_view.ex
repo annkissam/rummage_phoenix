@@ -96,7 +96,7 @@ defmodule Rummage.Phoenix.PaginateView do
 
     lower_limit = cond do
       page <= div(max_page_links, 2) -> 1
-      page >= (max_page - div(max_page_links, 2)) -> max_page - max_page_links + 1
+      page >= (max_page - div(max_page_links, 2)) -> Enum.max([0, max_page - max_page_links]) + 1
       true -> page - div(max_page_links, 2)
     end
 
