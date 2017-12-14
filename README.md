@@ -146,6 +146,14 @@ Please check the [screenshots](#more-screenshots) below for details
   end
   ```
 
+  or through the config:
+
+  ```
+  config :rummage_phoenix, Rummage.Phoenix, [
+    default_helpers: MyApp.Web.Router.Helpers,
+  ]
+  ```
+
   Note: If the path helper name is incorrect, you can specify it with:
 
   ```elixir

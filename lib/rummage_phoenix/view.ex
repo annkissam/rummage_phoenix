@@ -38,7 +38,16 @@ defmodule Rummage.Phoenix.View do
           ViewResolver.make_helpers_name_from_topmost_namespace(__MODULE__)
 
         unless Code.ensure_compiled?(helpers) do
-          raise "#{helpers} is undefined, please provide an explicit router to the View with: `use Rummage.Phoenix.View, helpers: MyApp.Web.Router.Helpers`"
+          raise """
+          #{helpers} is undefined, please provide an explicit router to the View with:
+          `use Rummage.Phoenix.View, helpers: MyApp.Web.Router.Helpers`"
+
+          or through a config:
+
+          config :rummage_phoenix, Rummage.Phoenix, [
+            default_helpers: MyApp.Web.Router.Helpers,
+          ]
+          """
         end
 
         helpers
