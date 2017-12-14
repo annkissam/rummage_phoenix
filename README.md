@@ -81,17 +81,6 @@ for all the models, add it to `model` function in `web.ex`
 
 ### Initial Setup
 
-  - Use `Rummage.Ecto` in the models/ecto structs:
-
-  ```elixir
-  defmodule MyApp.Product do
-    use MyApp.Web, :model
-    use Rummage.Ecto
-
-    # More code below....
-  end
-  ```
-
   - Use `Rummage.Controller` in to controller module:
 
   ```elixir
@@ -108,7 +97,7 @@ for all the models, add it to `model` function in `web.ex`
   ```elixir
   def index(conn, params) do
     {query, rummage} = Product
-      |> Product.rummage(params["rummage"])
+      |> Rummage.Ecto.rummage(params["rummage"])
 
     products = Repo.all(query)
 
@@ -178,7 +167,7 @@ Please check the [screenshots](#more-screenshots) below for details
 
   OR for Sort by associations:
   ```elixir
-    <th><%= sort_link @conn, @rummage, [field: :category_name, name: "Category Name", assoc: ["category"]] %></th>
+    <th><%= sort_link @conn, @rummage, [field: :name, name: "Category Name", assoc: ["category"]] %></th>
   ```
 
   Reload and this is how your page should look with sortable links instead of just table headers:
@@ -204,7 +193,7 @@ Please check the [screenshots](#more-screenshots) below for details
   ```elixir
   <%= search_form(@conn, @rummage, [fields:
   [
-    category_name: %{label: "Search by Category Name", search_type: "ilike", assoc: ["category"]}
+    name: %{label: "Search by Category Name", search_type: "ilike", assoc: ["category"]}
   ], button_class: "btn",
   ]) %>
   ```
