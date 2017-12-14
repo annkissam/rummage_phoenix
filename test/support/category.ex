@@ -4,6 +4,6 @@ defmodule Rummage.Ecto.Category do
   schema "categories" do
     field :category_name, :string
 
-    timestamps
+    timestamps()
   end
 end
