@@ -33,14 +33,28 @@ defmodule Rummage.Phoenix.View do
       end
 
       defp helpers do
-        unquote(opts[:helpers]) ||
-        Rummage.Phoenix.default_helpers ||
-        ViewResolver.make_helpers_name_from_topmost_namespace(__MODULE__)
+        helpers = unquote(opts[:helpers]) ||
+          Rummage.Phoenix.default_helpers ||
+          ViewResolver.make_helpers_name_from_topmost_namespace(__MODULE__)
+
+        unless Code.ensure_compiled?(helpers) do
+          raise "#{helpers} is undefined, please provide an explicit router to the View with: `use Rummage.Phoenix.View, helpers: MyApp.Web.Router.Helpers`"
+        end
+
+        helpers
       end
 
       defp struct do
-        unquote(opts[:struct]) ||
-        ViewResolver.make_struct_name_from_bottommost_namespace(__MODULE__)
+        struct = unquote(opts[:struct]) ||
+          ViewResolver.make_struct_name_from_bottommost_namespace(__MODULE__)
+
+        helpers = helpers()
+
+        unless function_exported?(helpers, String.to_atom("#{struct}_path"), 2) do
+          raise "#{struct}_path is undefined, please provide an explicit struct to the View with: `use Rummage.Phoenix.View, struct: \"some_model\""
+        end
+
+        struct
       end
     end
   end

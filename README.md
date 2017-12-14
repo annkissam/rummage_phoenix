@@ -135,6 +135,29 @@ Please check the [screenshots](#more-screenshots) below for details
   end
   ```
 
+  Note: If you get a "MyApp.Router.Helpers is not available" exception, you can provide your router with:
+
+  ```elixir
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    use Rummage.Phoenix.View, helpers: MyApp.Web.Router.Helpers
+
+    # More code below...
+  end
+  ```
+
+  Note: If the path helper name is incorrect, you can specify it with:
+
+  ```elixir
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    use Rummage.Phoenix.View, struct: "special_product" # will become special_product_path
+
+    # More code below...
+  end
+  ```
+
+
   - #### Pagination:
   Add this at the bottom of `index.html.eex` to render `Rummage` pagination links (Make sure that you
   pass `rummage` to the views from the `index` action in the controller) :
