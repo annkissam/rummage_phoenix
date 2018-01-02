@@ -60,7 +60,7 @@ defmodule Rummage.Phoenix.PaginateView do
 
     page = String.to_integer(paginate_params["page"] || "1")
     per_page = String.to_integer(paginate_params["per_page"] || "1")
-    max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
+    # max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
     label = opts[:first_label] || "First"
 
     case page == 1 do
@@ -134,7 +134,7 @@ defmodule Rummage.Phoenix.PaginateView do
 
     page = String.to_integer(paginate_params["page"] || "1")
     per_page = String.to_integer(paginate_params["per_page"] || "1")
-    max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
+    # max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
     max_page = String.to_integer(paginate_params["max_page"] || "1")
     label = opts[:last_label] || "Last"
 
@@ -147,11 +147,11 @@ defmodule Rummage.Phoenix.PaginateView do
   end
 
   defp transform_params(rummage, per_page, page, opts)
-  defp transform_params(rummage, per_page, page, %{slugs: slugs, slugs_params: slugs_params} = opts) do
+  defp transform_params(rummage, per_page, page, %{slugs: slugs, slugs_params: slugs_params}) do
     rummage = %{rummage: Map.put(rummage, "paginate", %{"per_page"=> per_page, "page"=> page})}
     slugs ++ Map.merge(rummage, slugs_params)
   end
-  defp transform_params(rummage, per_page, page, opts) do
+  defp transform_params(rummage, per_page, page, _opts) do
     %{rummage:
         Map.put(rummage, "paginate",
         %{"per_page"=> per_page, "page"=> page})
@@ -164,7 +164,4 @@ defmodule Rummage.Phoenix.PaginateView do
 
     apply(helpers, path_function_name, params)
   end
-
-  defp per_page(%{"per_page" => per_page}), do: String.to_integer(per_page)
-  defp per_page(_paginate_params), do: Rummage.Phoenix.default_per_page
 end

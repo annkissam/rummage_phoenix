@@ -36,7 +36,7 @@ defmodule Rummage.Phoenix do
   in the `config.exs` file
 
   ## Examples
-  Returns default `heloers` set in the config
+  Returns default `helpers` set in the config
   (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_helpers
@@ -51,8 +51,8 @@ defmodule Rummage.Phoenix do
   in the `config.exs` file
 
   ## Examples
-  Returns default `heloers` set in the config
-  (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
+  Returns default `theme` set in the config
+  (`:bootstrap in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_theme
       :bootstrap
@@ -66,8 +66,8 @@ defmodule Rummage.Phoenix do
   in the `config.exs` file
 
   ## Examples
-  Returns default `heloers` set in the config
-  (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
+  Returns default `default_max_page_links` set in the config
+  (`5 in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_max_page_links
       5
