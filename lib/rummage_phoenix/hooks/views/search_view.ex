@@ -89,7 +89,7 @@ defmodule Rummage.Phoenix.SearchView do
           :safe,
           elem(hidden_input(e, :search_type, value: search_type, class: "form-control"), 1) ++
           elem(hidden_input(e, :assoc, value: assoc, class: "form-control"), 1) ++
-          elem(apply(Phoenix.HTML.Form, input_type, [e, :search_term, input_fields]), 1)
+          elem(apply(Phoenix.HTML.Form, input_type, [e, :search_term | input_fields]), 1)
         }
         end), 1)
     end) |> Enum.reduce([], & &2 ++ &1)
