@@ -58,7 +58,7 @@ end
       {:phoenix, "~> 1.2.1 or ~> 1.3.0"},
       {:phoenix_html, "~> 2.6"},
       {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, "~> 1.2.0"},
+      {:rummage_ecto, "~> 1.2"},
     ]
   end
 

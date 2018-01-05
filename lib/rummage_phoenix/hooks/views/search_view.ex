@@ -76,6 +76,8 @@ defmodule Rummage.Phoenix.SearchView do
       field_params = elem(field, 1)
       label = field_params[:label] || "Search by #{Phoenix.Naming.humanize(field_name)}"
       search_type = field_params[:search_type] || "like"
+      input_type = field_params[:input_type] || :search_input
+      input_fields = field_params[:input_fields] || [value: search[Atom.to_string(field_name)]["search_term"], class: "form-control"]
       assoc = case field_params[:assoc] do
           nil -> ""
           assocs -> Enum.join(assocs, " -> ")
@@ -87,7 +89,7 @@ defmodule Rummage.Phoenix.SearchView do
           :safe,
           elem(hidden_input(e, :search_type, value: search_type, class: "form-control"), 1) ++
           elem(hidden_input(e, :assoc, value: assoc, class: "form-control"), 1) ++
-          elem(search_input(e, :search_term, value: search[Atom.to_string(field_name)]["search_term"], class: "form-control"), 1)
+          elem(apply(Phoenix.HTML.Form, input_type, [e, :search_term, input_fields]), 1)
         }
         end), 1)
     end) |> Enum.reduce([], & &2 ++ &1)
