@@ -21,3 +21,7 @@ bash.sh
 
 # Inch CI
 /docs
+
+*.sqlite3
+*.sqlite3-*
+
