@@ -17,21 +17,6 @@ defmodule Rummage.Phoenix do
   """
 
   @doc """
-  `:default_per_page` can also be set at run time
-  in the `config.exs` file
-
-  ## Examples
-  Returns default `per_page` set in the config
-  (`2 in `Rummage.Phoenix`'s test env):
-      iex> alias Rummage.Phoenix
-      iex> Phoenix.default_per_page
-      2
-  """
-  def default_per_page do
-    config(:default_per_page, Rummage.Ecto.Config.default_per_page)
-  end
-
-  @doc """
   `:default_helpers` can also be set at run time
   in the `config.exs` file
 
@@ -95,21 +80,6 @@ defmodule Rummage.Phoenix do
     config()
     |> Keyword.get(key, default)
     |> resolve_config(default)
-  end
-
-  @doc """
-  `resolve_system_config` returns a system variable set up or returns the
-  specified default value
-
-  ## Examples
-  Returns value corresponding to a system variable config or returns the default value:
-      iex> alias Rummage.Phoenix
-      iex> Phoenix.resolve_system_config({:system, "some random config"}, "default")
-      "default"
-  """
-  @spec resolve_system_config(Tuple.t, term) :: {term}
-  def resolve_system_config({:system, var_name}, default) do
-    System.get_env(var_name) || default
   end
 
   defp resolve_config(value, _default), do: value

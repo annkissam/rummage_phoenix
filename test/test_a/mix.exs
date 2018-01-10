@@ -34,7 +34,7 @@ defmodule TestA.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:rummage_phoenix, path: "../../rummage_phoenix"}
+      {:rummage_phoenix, path: "../.."}
     ]
   end
 

@@ -38,7 +38,7 @@ defmodule TestBWeb.Mixfile do
       {:gettext, "~> 0.11"},
       {:test_b, in_umbrella: true},
       {:cowboy, "~> 1.0"},
-      {:rummage_phoenix, path: "../../../../rummage_phoenix"}
+      {:rummage_phoenix, path: "../../../../.."}
     ]
   end
 
