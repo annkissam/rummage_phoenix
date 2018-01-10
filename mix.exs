@@ -55,10 +55,10 @@ end
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:excoveralls, "~> 0.3", only: :test},
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
-      {:phoenix, "~> 1.2.1 or ~> 1.3.0"},
+      {:phoenix, "~> 1.3"},
       {:phoenix_html, "~> 2.6"},
-      {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, "~> 1.2.0"},
+      {:rummage_ecto, "~> 1.3.0-rc.0"},
+      {:sqlite_ecto2, "~> 2.2", only: :test},
     ]
   end
 
