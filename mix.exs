@@ -57,8 +57,8 @@ end
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
       {:phoenix, "~> 1.3"},
       {:phoenix_html, "~> 2.6"},
-      {:rummage_ecto, "~> 1.3.0-rc.0"},
-      {:sqlite_ecto2, "~> 2.2", only: [:test]},
+      {:postgrex, ">= 0.0.0", only: :test},
+      {:rummage_ecto, git: "git@github.com:aditya7iyengar/rummage_ecto", branch: "v1.3.0"},
     ]
   end
 

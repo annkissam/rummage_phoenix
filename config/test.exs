@@ -16,6 +16,8 @@ config :rummage_phoenix, Rummage.Phoenix, [
 config :rummage_phoenix, ecto_repos: [Rummage.Phoenix.Repo]
 
 config :rummage_phoenix, Rummage.Phoenix.Repo,
-  adapter: Sqlite.Ecto2,
-  database: "rummage_phoenix_test.sqlite3",
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("POSTGRES_USERNAME"),
+  password: System.get_env("POSTGRES_PASSWORD"),
+  database: "rummage_phoenix_test",
   pool: Ecto.Adapters.SQL.Sandbox
