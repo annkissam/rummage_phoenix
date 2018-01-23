@@ -9,7 +9,7 @@ defmodule Rummage.Phoenix.Controller do
   ```elixir
   defmodule MyApp.ProductController do
     use MyApp.Web, :controller
-    use Rummage.Phoenix.Controller, struct: :product, helpers: MyApp.Router.Helpers
+    use Rummage.Phoenix.Controller
   end
   ```
 
@@ -18,8 +18,17 @@ defmodule Rummage.Phoenix.Controller do
   ```elixir
   defmodule MyApp.ProductController do
     use MyApp.Web, :controller
-    use Rummage.Phoenix.Controller, struct: :product, helpers: MyApp.Router.Helpers,
+    use Rummage.Phoenix.Controller,
       only: [:search, :sort]
+  end
+  ```
+
+  If you need actions other than index
+  ```elixir
+  defmodule MyApp.ProductController do
+    use MyApp.Web, :controller
+    use Rummage.Phoenix.Controller,
+      actions: [:index, :show]
   end
   ```
 
@@ -31,7 +40,9 @@ defmodule Rummage.Phoenix.Controller do
   defmacro __using__(opts) do
     quote do
       plug Rummage.Phoenix.Plug, %{hooks: unquote((opts[:only] || [:search, :sort, :paginate])
-                                                    |> Enum.map(&Atom.to_string &1))}
+                                                    |> Enum.map(&Atom.to_string &1)),
+        actions: unquote(opts[:actions] || [:index])
+      }
     end
   end
 end

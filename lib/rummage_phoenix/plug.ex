@@ -13,12 +13,12 @@ defmodule Rummage.Phoenix.Plug do
 
   ## Examples
       iex> alias Rummage.Phoenix.Plug
-      iex> params = %{}
-      iex> Plug.init(params)
+      iex> options = %{}
+      iex> Plug.init(options)
       %{}
   """
-  def init(params) do
-    params
+  def init(options) do
+    options
   end
 
   @doc """
@@ -26,28 +26,39 @@ defmodule Rummage.Phoenix.Plug do
   to it:
 
   ## Examples
-      iex> params = %{}
+      iex> opts = %{hooks: ["search", "sort", "paginate"], actions: [:index]}
       iex> conn = %Plug.Conn{}
-      iex> Rummage.Phoenix.Plug.call(conn, params) == conn
+      iex> Rummage.Phoenix.Plug.call(conn, opts) == conn
       true
 
-      iex> params = %{hooks: ["search", "sort", "paginate"]}
-      iex> conn = %{__struct__: Plug.Conn, params: %{}, private: %{phoenix_action: :index}}
-      iex> Rummage.Phoenix.Plug.call(conn, params) == %{__struct__: Plug.Conn, params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :index}}
+      iex> opts = %{hooks: ["search", "sort", "paginate"], actions: [:index]}
+      iex> conn = %Plug.Conn{params: %{}, private: %{phoenix_action: :index}}
+      iex> Rummage.Phoenix.Plug.call(conn, opts) == %Plug.Conn{params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :index}}
       true
 
-      iex> params = %{hooks: ["search", "sort", "paginate"]}
-      iex> conn = %{__struct__: Plug.Conn, params: %{"rummage" => %{}}, private: %{phoenix_action: :index}}
-      iex> Rummage.Phoenix.Plug.call(conn, params) == %{__struct__: Plug.Conn, params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :index}}
+      iex> opts = %{hooks: ["search", "sort", "paginate"], actions: [:index]}
+      iex> conn = %Plug.Conn{params: %{"rummage" => %{}}, private: %{phoenix_action: :index}}
+      iex> Rummage.Phoenix.Plug.call(conn, opts) == %Plug.Conn{params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :index}}
+      true
+
+      iex> opts = %{hooks: ["search", "sort", "paginate"], actions: [:index]}
+      iex> conn = %Plug.Conn{params: %{"rummage" => %{}}, private: %{phoenix_action: :show}}
+      iex> Rummage.Phoenix.Plug.call(conn, opts) == conn
+      true
+
+      iex> opts = %{hooks: ["search", "sort", "paginate"], actions: [:index, :show]}
+      iex> conn = %Plug.Conn{params: %{"rummage" => %{}}, private: %{phoenix_action: :show}}
+      iex> Rummage.Phoenix.Plug.call(conn, opts) == %Plug.Conn{params: %{"rummage" => %{"paginate" => %{}, "search" => %{}, "sort" => %{}}}, private: %{phoenix_action: :show}}
       true
   """
   def call(conn, opts) do
-    hooks = opts[:hooks]
-    before_action(conn, hooks)
+    hooks = Map.fetch!(opts, :hooks)
+    actions = Map.fetch!(opts, :actions)
+    before_action(conn, hooks, actions)
   end
 
-  defp before_action(conn, hooks) do
-    case conn.private[:phoenix_action] == :index do
+  defp before_action(conn, hooks, actions) do
+    case Enum.member?(actions, conn.private[:phoenix_action]) do
       true -> %Plug.Conn{conn | params: rummage_params(conn.params, hooks)}
       _ -> conn
     end
