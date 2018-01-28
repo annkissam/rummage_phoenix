@@ -1,14 +1,14 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "1.2.0"
+  @version "1.3.0-rc.0"
   @url "https://github.com/aditya7iyengar/rummage_phoenix"
 
   def project do
     [
       app: :rummage_phoenix,
       version: @version,
-      elixir: "~> 1.3",
+      elixir: "~> 1.4",
       deps: deps(),
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -55,10 +55,10 @@ end
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:excoveralls, "~> 0.3", only: :test},
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
-      {:phoenix, "~> 1.2.1 or ~> 1.3.0"},
+      {:phoenix, "~> 1.3"},
       {:phoenix_html, "~> 2.6"},
-      {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, "~> 1.2"},
+      {:postgrex, ">= 0.0.0", only: :test},
+      {:rummage_ecto, git: "git@github.com:aditya7iyengar/rummage_ecto", branch: "v1.3.0"},
     ]
   end
 
