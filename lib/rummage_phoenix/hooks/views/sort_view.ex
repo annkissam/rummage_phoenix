@@ -148,7 +148,5 @@ defmodule Rummage.Phoenix.SortView do
       url = index_path(opts, [conn, :index, %{rummage: rummage_params}])
       sort_text_or_image(url, [], name)
     end
-
-    sort_text url, do: text
   end
 end

@@ -78,6 +78,6 @@ defmodule Rummage.Phoenix.BootstrapAdapter do
       true -> "</a>"
     end
 
-    base <> name
+    Phoenix.HTML.raw(base <> name)
   end
 end
