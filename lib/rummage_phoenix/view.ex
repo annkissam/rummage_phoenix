@@ -24,24 +24,20 @@ defmodule Rummage.Phoenix.View do
         PaginateView.pagination_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
       end
 
-      def sort_link(conn, rummage, opts \\ []) do
-        SortView.sort_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+      def sort_link(conn, rummage, field) do
+        sort_link(conn, rummage, field, Phoenix.Naming.humanize(field), [])
       end
 
-      def new_sort_link(conn, rummage, field) do
-        new_sort_link(conn, rummage, field, Phoenix.Naming.humanize(field), [])
+      def sort_link(conn, rummage, field, name) when is_binary(name) do
+        sort_link(conn, rummage, field, name, [])
       end
 
-      def new_sort_link(conn, rummage, field, name) when is_binary(name) do
-        new_sort_link(conn, rummage, field, name, [])
+      def sort_link(conn, rummage, field, opts) when is_list(opts) do
+        sort_link(conn, rummage, field, Phoenix.Naming.humanize(field), opts)
       end
 
-      def new_sort_link(conn, rummage, field, opts) when is_list(opts) do
-        new_sort_link(conn, rummage, field, Phoenix.Naming.humanize(field), opts)
-      end
-
-      def new_sort_link(conn, rummage, field, name, opts) do
-        SortView.new_sort_link(conn, rummage, field, name, opts ++ [struct: struct(), helpers: helpers()])
+      def sort_link(conn, rummage, field, name, opts) do
+        SortView.sort_link(conn, rummage, field, name, opts ++ [struct: struct(), helpers: helpers()])
       end
 
       def search_form(conn, rummage, link_params, opts \\ []) do
