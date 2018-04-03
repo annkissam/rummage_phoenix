@@ -23,7 +23,6 @@ defmodule Rummage.Phoenix.PaginateView do
   """
 
   use Rummage.Phoenix.ThemeAdapter
-  import Phoenix.HTML
 
   @doc """
   This macro includes the helper functions for pagination
@@ -47,12 +46,44 @@ defmodule Rummage.Phoenix.PaginateView do
       middle_page_links(conn, rummage, opts) ++
       [next_page_link(conn, rummage, opts)] ++
       [last_page_link(conn, rummage, opts)]
-      |> Enum.join("\n")
+    end
+  end
+
+  def pagination_with_all_link(conn, rummage, opts \\ []) do
+    pagination_links do
+      [first_page_link(conn, rummage, opts)] ++
+      [previous_page_link(conn, rummage, opts)] ++
+      middle_page_links(conn, rummage, opts) ++
+      [next_page_link(conn, rummage, opts)] ++
+      [last_page_link(conn, rummage, opts)] ++
+      [all_page_link(conn, rummage, opts)]
+    end
+  end
+
+  def all_page_link(conn, rummage, opts) do
+    paginate_params = rummage.paginate
+
+    per_page = paginate_params.per_page
+    label = opts[:all_label] || "All"
+
+    case per_page == -1 do
+      true -> page_link "#", :disabled, do: label
+      false ->
+        page_link index_path(opts, [conn, :index,
+          transform_params(rummage, -1, 1, opts)]), do: label
     end
   end
 
   # def per_page_link(conn, rummage, opts \\ []) do
-  #   form_for(conn, index_path(opts, [conn, :index]))
+  #   import Phoenix.HTML.Form
+
+  #   paginate_params = rummage.paginate
+
+  #   form_for conn, index_path(opts, [conn, :index]), [as: :params, method: :get], fn(form) ->
+  #     input = number_input(form, :per_page, value: paginate_params.per_page)
+  #     submit = submit("Set Per Page", class: "btn btn-default")
+  #     [input, submit]
+  #   end
   # end
 
   defp first_page_link(conn, rummage, opts) do
