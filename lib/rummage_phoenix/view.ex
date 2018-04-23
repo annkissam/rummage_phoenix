@@ -24,6 +24,11 @@ defmodule Rummage.Phoenix.View do
         PaginateView.pagination_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
       end
 
+      # TODO: This doesn't scale well.
+      def pagination_with_all_link(conn, rummage, opts \\ []) do
+        PaginateView.pagination_with_all_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+      end
+
       def sort_link(conn, rummage, field) do
         sort_link(conn, rummage, field, Phoenix.Naming.humanize(field), [])
       end
