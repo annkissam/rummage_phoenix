@@ -39,8 +39,16 @@ defmodule Rummage.Phoenix.SortView do
 
   ```elixir
   <%= sort_link @conn, @rummage, field, "Name" %>
+  <%= sort_link @conn, {@rummage, :rummage_key}, field, "Name" %>
   ```
   """
+  def sort_link(conn, {rummage, rummage_key}, field, name, opts) do
+    opts = opts
+    |> Keyword.merge([rummage_key: rummage_key])
+
+    sort_link(conn, rummage, field, name, opts)
+  end
+
   def sort_link(conn, rummage, field, name, opts) do
     sort_params = rummage.sort
 
@@ -48,6 +56,7 @@ defmodule Rummage.Phoenix.SortView do
     asc_text = Keyword.get(opts, :asc_text, "↑")
     desc_icon = Keyword.get(opts, :desc_icon)
     desc_text = Keyword.get(opts, :desc_text, "↓")
+    rummage_key = Keyword.get(opts, :rummage_key, :rummage)
 
     # Drop pagination unless we're showing the entire result set
     rummage_params = if rummage.params.paginate && rummage.params.paginate.per_page == -1 do
@@ -63,20 +72,20 @@ defmodule Rummage.Phoenix.SortView do
           rummage_params = rummage_params
           |> Map.put(:sort, %{name: field, order: "desc"})
 
-          url = index_path(opts, [conn, :index, %{rummage: rummage_params}])
+          url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
           sort_text_or_image(url, [img: desc_icon, text: desc_text], name)
         "desc" ->
           rummage_params = rummage_params
           |> Map.put(:sort, %{name: field, order: "asc"})
 
-          url = index_path(opts, [conn, :index, %{rummage: rummage_params}])
+          url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
           sort_text_or_image(url, [img: asc_icon, text: asc_text], name)
       end
     else
       rummage_params = rummage_params
       |> Map.put(:sort, %{name: field, order: "asc"})
 
-      url = index_path(opts, [conn, :index, %{rummage: rummage_params}])
+      url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
       sort_text_or_image(url, [], name)
     end
   end
