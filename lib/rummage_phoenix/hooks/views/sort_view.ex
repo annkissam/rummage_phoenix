@@ -40,7 +40,7 @@ defmodule Rummage.Phoenix.SortView do
   ```elixir
   <%= sort_link @conn, @rummage, field, "Name" %>
   <%= sort_link @conn, {@rummage, :rummage_key}, field, "Name" %>
-  <%= sort_link @conn, {@rummage, :rummage_key}, field, "Name", path: &(something_path_path(@conn, :show, @something, &1)) %>
+  <%= sort_link @conn, @rummage, field, "Name", path: &(something_path(@conn, :show, @something, &1)) %>
   ```
   """
   def sort_link(conn, {rummage, rummage_key}, field, name, opts) do
