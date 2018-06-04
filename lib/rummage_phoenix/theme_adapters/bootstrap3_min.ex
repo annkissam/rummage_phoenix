@@ -1,4 +1,9 @@
-defmodule Rummage.Phoenix.BootstrapAdapter do
+defmodule Rummage.Phoenix.Bootstrap3Min do
+  @moduledoc """
+  This is the theme adapter for Bootstrap 3 Minimal, which comes shipped with
+  Phoenix.
+  """
+
   defmacro pagination_links(do: expression) do
     quote do
       Phoenix.HTML.Tag.content_tag :nav, ["aria-lablel": "..."] do
