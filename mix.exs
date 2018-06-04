@@ -1,14 +1,15 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "1.2.0"
+  @version "2.0.0-rc.0"
+  @elixir "~> 1.6"
   @url "https://github.com/aditya7iyengar/rummage_phoenix"
 
   def project do
     [
       app: :rummage_phoenix,
       version: @version,
-      elixir: "~> 1.3",
+      elixir: @elixir,
       deps: deps(),
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -35,7 +36,7 @@ defmodule Rummage.Phoenix.Mixfile do
         :logger,
         :phoenix_html,
         :phoenix,
-        :rummage_ecto,
+        # :rummage_ecto,
       ],
     ]
   end
@@ -51,21 +52,25 @@ end
 
   defp deps do
     [
-      {:credo, "~> 0.5", only: [:dev, :test]},
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.3", only: :test},
-      {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
-      {:phoenix, "~> 1.2.1 or ~> 1.3.0"},
+      # Development Dependencies
+      {:phoenix, "~> 1.3.0"},
       {:phoenix_html, "~> 2.6"},
-      {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, "~> 1.2"},
+
+      # Other Dependencies
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.8", only: :test, runtime: false},
+      {:inch_ex, "~> 0.5", only: [:dev, :test, :docs], runtime: false},
+      {:postgrex, "~> 0.13", only: :test, optional: true, runtime: false},
+      # {:rummage_ecto, "~> 2.0.0-rc.0"},
+      # {:rummage_ecto, path: "../rummage_ecto"},
     ]
   end
 
   defp description do
     """
-    A full support library for phoenix that allows us to search, sort and
-    paginate phoenix ecto models.
+    A Support library for Rummage.Ecto to add Search, Sort and Pagination to
+    Phoenix apps using HTML and Views/Controllers.
     """
   end
 
@@ -73,27 +78,19 @@ end
     [
       main: "Rummage.Phoenix",
       source_url: @url,
-      extras: ["doc_readme.md", "CHANGELOG.md"],
+      extras: ["README.md",
+               "CHANGELOG.md",
+               "docs/Nomenclature.md",
+               "docs/Walkthrough.md"],
       source_ref: "v#{@version}"
     ]
   end
 
   defp aliases do
     [
-      "ecto.setup": [
-        "ecto.create",
-        "ecto.migrate"
-      ],
-     "ecto.reset": [
-        "ecto.drop",
-        "ecto.setup"
-      ],
-     "test": [
-        # "ecto.drop",
-        "ecto.create --quiet",
-        "ecto.migrate",
-        "test"
-      ],
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "test": ["ecto.setup --quite", "test"],
     ]
   end
 
