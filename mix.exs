@@ -54,7 +54,7 @@ end
     [
       # Development Dependencies
       {:phoenix, "~> 1.3.0"},
-      {:phoenix_html, "~> 2.6"},
+      {:phoenix_html, "~> 2.11"},
 
       # Other Dependencies
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
