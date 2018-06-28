@@ -20,14 +20,14 @@ defmodule Rummage.Phoenix.View do
       require Rummage.Phoenix.{PaginateView, SearchView, SortView, ViewResolver}
       alias Rummage.Phoenix.{PaginateView, SearchView, SortView, ViewResolver}
 
-      def pagination_link(conn, rummage, opts \\ []) do
-        PaginateView.pagination_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+      def pagination_links(conn, rummage, opts \\ []) do
+        PaginateView.pagination_links(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
       end
 
       # TODO: This doesn't scale well.
-      def pagination_with_all_link(conn, rummage, opts \\ []) do
-        PaginateView.pagination_with_all_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
-      end
+      # def pagination_with_all_link(conn, rummage, opts \\ []) do
+      #   PaginateView.pagination_with_all_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+      # end
 
       def sort_link(conn, rummage, field) do
         sort_link(conn, rummage, field, Phoenix.Naming.humanize(field), [])

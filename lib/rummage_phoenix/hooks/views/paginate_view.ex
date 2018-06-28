@@ -22,8 +22,6 @@ defmodule Rummage.Phoenix.PaginateView do
 
   """
 
-  use Rummage.Phoenix.ThemeAdapter
-
   @doc """
   This macro includes the helper functions for pagination
 
@@ -39,32 +37,30 @@ defmodule Rummage.Phoenix.PaginateView do
   pagination_link(@conn, @rummage)
   ```
   """
-  def pagination_link(conn, rummage, opts \\ []) do
-    pagination_links do
-      [first_page_link(conn, rummage, opts)] ++
-      [previous_page_link(conn, rummage, opts)] ++
-      middle_page_links(conn, rummage, opts) ++
-      [next_page_link(conn, rummage, opts)] ++
-      [last_page_link(conn, rummage, opts)]
+  def pagination_links(conn, rummage, opts \\ []) do
+    theme_adapter = Keyword.get(opts, :theme_adapter, Rummage.Phoenix.Bootstrap3Min)
+
+    theme_adapter.pagination_links do
+      raw_links(conn, rummage, opts)
     end
   end
 
-  def pagination_with_all_link(conn, rummage, opts \\ []) do
-    pagination_links do
-      [first_page_link(conn, rummage, opts)] ++
-      [previous_page_link(conn, rummage, opts)] ++
-      middle_page_links(conn, rummage, opts) ++
-      [next_page_link(conn, rummage, opts)] ++
-      [last_page_link(conn, rummage, opts)] ++
-      [all_page_link(conn, rummage, opts)]
-    end
+  defdelegate page_link(url, status, kw), to: Rummage.Phoenix.Bootstrap3Min
+  defdelegate page_link(url, kw), to: Rummage.Phoenix.Bootstrap3Min
+
+  def raw_links(conn, rummage, opts \\ []) do
+    Enum.reject([first_page_link(conn, rummage, opts)] ++
+    [previous_page_link(conn, rummage, opts)] ++
+    middle_page_links(conn, rummage, opts) ++
+    [next_page_link(conn, rummage, opts)] ++
+    [last_page_link(conn, rummage, opts)], &is_nil/1)
   end
 
-  def all_page_link(conn, rummage, opts) do
+  defp all_page_link(conn, rummage, opts) do
     paginate_params = rummage.paginate
 
     per_page = paginate_params.per_page
-    label = opts[:all_label] || "All"
+    label = Keyword.get(opts, :all_label, "All")
 
     case per_page == -1 do
       true -> page_link "#", :disabled, do: label
@@ -87,18 +83,20 @@ defmodule Rummage.Phoenix.PaginateView do
   # end
 
   defp first_page_link(conn, rummage, opts) do
-    paginate_params = rummage.paginate
+    if Keyword.get(opts, :first, true) do
+      theme_adapter = Keyword.get(opts, :theme_adapter,
+                                  Rummage.Phoenix.Bootstrap3Min)
+      paginate_params = rummage.paginate
 
-    page = paginate_params.page
-    per_page = paginate_params.per_page
-    # max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
-    label = opts[:first_label] || "First"
+      page = paginate_params.page
+      per_page = paginate_params.per_page
+      label = Keyword.get(opts, :first_label, "First")
 
-    case page == 1 do
-      true -> page_link "#", :disabled, do: label
-      false ->
-        page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, 1, opts)]), do: label
+      case page == 1 do
+        true -> theme_adapter.page_link("#", :disabled, do: label)
+        false -> theme_adapter.page_link(index_path(opts, [conn, :index,
+            transform_params(rummage, per_page, 1, opts)]), do: label)
+      end
     end
   end
 
@@ -123,7 +121,7 @@ defmodule Rummage.Phoenix.PaginateView do
     page = paginate_params.page
     per_page = paginate_params.per_page
     max_page = paginate_params.max_page
-    max_page_links = opts[:max_page_links] || Rummage.Phoenix.default_max_page_links
+    max_page_links = opts[:max_page_links] || 5 #Rummage.Phoenix.default_max_page_links
 
     lower_limit = cond do
       page <= div(max_page_links, 2) -> 1
@@ -178,15 +176,16 @@ defmodule Rummage.Phoenix.PaginateView do
   end
 
   defp transform_params(rummage, per_page, page, opts)
-  defp transform_params(rummage, per_page, page, %{slugs: slugs, slugs_params: slugs_params}) do
-    rummage = %{rummage: Map.put(rummage.params, "paginate", %{"per_page"=> per_page, "page"=> page})}
+  defp transform_params(rummage, per_page, page,
+                        %{slugs: slugs, slugs_params: slugs_params})
+  do
+    rummage = %{rummage: Map.put(rummage, "paginate",
+                                 %{"per_page"=> per_page, "page"=> page})}
     slugs ++ Map.merge(rummage, slugs_params)
   end
   defp transform_params(rummage, per_page, page, _opts) do
-    %{rummage:
-        Map.put(rummage.params, :paginate,
-        %{per_page: per_page, page: page})
-    }
+    %{"rummage" => Map.put(rummage, "paginate",
+                           %{"per_page"=> per_page, "page"=> page})}
   end
 
   defp index_path(opts, params) do

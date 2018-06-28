@@ -4,45 +4,32 @@ defmodule Rummage.Phoenix.Controller do
 
   Usage:
 
-  If the application is using default Rummage Hooks
-
-  ```elixir
-  defmodule MyApp.ProductController do
-    use MyApp.Web, :controller
-    use Rummage.Phoenix.Controller
-  end
-  ```
-
-  If the application is using only some of the Rummage Hooks, say search and sort.
-
-  ```elixir
-  defmodule MyApp.ProductController do
-    use MyApp.Web, :controller
-    use Rummage.Phoenix.Controller,
-      only: [:search, :sort]
-  end
-  ```
-
-  If you need actions other than index
-  ```elixir
-  defmodule MyApp.ProductController do
-    use MyApp.Web, :controller
-    use Rummage.Phoenix.Controller,
-      actions: [:index, :show]
-  end
-  ```
 
   """
 
-  @doc """
-  This macro includes the helpers functions from different Rummage.Phoenix.Controllers
-  """
-  defmacro __using__(opts) do
-    quote do
-      plug Rummage.Phoenix.Plug, %{hooks: unquote((opts[:only] || [:search, :sort, :paginate])
-                                                    |> Enum.map(&Atom.to_string &1)),
-        actions: unquote(opts[:actions] || [:index])
-      }
-    end
+  @doc false
+  def rummage_params(%{} = rummage_params) do
+    Enum.reduce(~w{search sort paginate}, %{}, fn(key, acc) ->
+      case Map.get(rummage_params, key) do
+        nil -> acc
+        value -> Map.put(acc, :"#{key}", apply(__MODULE__, :"__rummage_#{key}_params__", [value]))
+      end
+    end)
+  end
+
+  @doc false
+  def __rummage_search_params__(p), do: p
+
+  @doc false
+  def __rummage_sort_params__(p), do: p
+
+  @doc false
+  def __rummage_paginate_params__(params) do
+    Enum.reduce(~w{per_page page}, %{}, fn(key, acc) ->
+      case Map.get(params, key) do
+        nil -> acc
+        value -> Map.put(acc, :"#{key}", String.to_integer(value))
+      end
+    end)
   end
 end

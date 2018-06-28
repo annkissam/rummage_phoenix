@@ -24,8 +24,6 @@ defmodule Rummage.Phoenix.SortView do
 
   """
 
-  use Rummage.Phoenix.ThemeAdapter
-
   @doc """
   This macro includes the helpers functions for sorting.
 
@@ -73,20 +71,20 @@ defmodule Rummage.Phoenix.SortView do
           |> Map.put(:sort, %{name: field, order: "desc"})
 
           url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
-          sort_text_or_image(url, [img: desc_icon, text: desc_text], name)
+          # sort_text_or_image(url, [img: desc_icon, text: desc_text], name)
         "desc" ->
           rummage_params = rummage_params
           |> Map.put(:sort, %{name: field, order: "asc"})
 
           url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
-          sort_text_or_image(url, [img: asc_icon, text: asc_text], name)
+          # sort_text_or_image(url, [img: asc_icon, text: asc_text], name)
       end
     else
       rummage_params = rummage_params
       |> Map.put(:sort, %{name: field, order: "asc"})
 
       url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
-      sort_text_or_image(url, [], name)
+      # sort_text_or_image(url, [], name)
     end
   end
 
