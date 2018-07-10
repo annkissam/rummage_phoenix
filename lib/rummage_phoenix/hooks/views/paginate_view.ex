@@ -34,14 +34,19 @@ defmodule Rummage.Phoenix.PaginateView do
   [README](https://github.com/Excipients/rummage_phoenix) for more details
 
   ```elixir
-  pagination_link(@conn, @rummage)
+  pagination_links(@conn, @rummage)
   ```
   """
-  def pagination_links(conn, rummage, opts \\ []) do
-    theme_adapter = Keyword.get(opts, :theme_adapter, Rummage.Phoenix.Bootstrap3Min)
+  def pagination_links(conn, rummage, opts \\ [])
+  def pagination_links(conn, rummage, opts) do
+    case Map.equal?(rummage, %{}) do
+      false ->
+        theme_adapter = Keyword.get(opts, :theme_adapter, Rummage.Phoenix.Bootstrap3Min)
 
-    theme_adapter.pagination_links do
-      raw_links(conn, rummage, opts)
+        theme_adapter.pagination_links do
+          raw_links(conn, rummage, opts)
+        end
+      true -> ""
     end
   end
 

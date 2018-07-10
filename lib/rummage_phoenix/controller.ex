@@ -7,14 +7,46 @@ defmodule Rummage.Phoenix.Controller do
 
   """
 
-  @doc false
-  def rummage_params(%{} = rummage_params) do
-    Enum.reduce(~w{search sort paginate}, %{}, fn(key, acc) ->
-      case Map.get(rummage_params, key) do
-        nil -> acc
-        value -> Map.put(acc, :"#{key}", apply(__MODULE__, :"__rummage_#{key}_params__", [value]))
+  defmacro __using__(opts) do
+    rummage_ecto_app = Keyword.get(opts, :rummage_ecto_app, nil)
+
+    quote do
+      import unquote(__MODULE__)
+
+      @doc false
+      def rummage_params(nil), do: rummage_params(%{})
+      def rummage_params(%{} = rummage_params) do
+        Enum.reduce(~w{search sort paginate}, %{}, fn(key, acc) ->
+          case Map.get(rummage_params, key) do
+            nil -> __call_fn__(key, acc)
+            value ->
+              Map.put(acc,
+                      :"#{key}",
+                      apply(__MODULE__, :"__rummage_#{key}_params__", [value]))
+          end
+        end)
       end
-    end)
+
+      defp __call_fn__(key, acc) do
+        case function_exported?(__MODULE__, :"__rummage_default_#{key}_params__", 0) do
+          true ->
+            Map.put(acc,
+                    :"#{key}",
+                    apply(__MODULE__, :"__rummage_default_#{key}_params__", []))
+          false -> acc
+        end
+      end
+
+      @doc false
+      def __rummage_default_paginate_params__ do
+        per_page = case unquote(rummage_ecto_app) do
+          nil -> Rummage.Ecto.Config.per_page
+          app -> Rummage.Ecto.Config.per_page(app)
+        end
+
+        %{per_page: per_page, page: 1}
+      end
+    end
   end
 
   @doc false

@@ -23,7 +23,7 @@ defmodule Rummage.Phoenix.Bootstrap3Min do
       Phoenix.HTML.Link.link [to: url, class: "page-link"] do
         [
           Phoenix.HTML.html_escape(text),
-          Phoenix.HTML.Tag.content_tag :span, [class: "sr-only"], do: "(current)"
+          Phoenix.HTML.Tag.content_tag(:span, [class: "sr-only"], do: "(current)")
         ]
       end
     end
