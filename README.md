@@ -1,11 +1,11 @@
 # Rummage.Phoenix
 
-[![Build Status](https://travis-ci.org/aditya7iyengar/rummage_phoenix.svg?branch=master)](https://travis-ci.org/aditya7iyengar/rummage_phoenix)
+[![Build Status](https://travis-ci.org/annkissam/rummage_phoenix.svg?branch=master)](https://travis-ci.org/annkissam/rummage_phoenix)
 [![Hex Version](http://img.shields.io/hexpm/v/rummage_phoenix.svg?style=flat)](https://hex.pm/packages/rummage_phoenix)
 [![hex.pm downloads](https://img.shields.io/hexpm/dt/rummage_phoenix.svg)](https://hex.pm/packages/rummage_phoenix)
 [![Hex docs](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/rummage_phoenix)
-[![docs](https://inch-ci.org/github/aditya7iyengar/rummage_phoenix.svg)](http://inch-ci.org/github/aditya7iyengar/rummage_phoenix)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/aditya7iyengar/rummage_phoenix/master/LICENSE)
+[![docs](https://inch-ci.org/github/annkissam/rummage_phoenix.svg)](http://inch-ci.org/github/annkissam/rummage_phoenix)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/annkissam/rummage_phoenix/master/LICENSE)
 
 `Rummage.Phoenix` is a support framework for `Phoenix` that can be used to manipulate `Phoenix` collections and `Ecto`
 models with Search, Sort and Paginate operations.
@@ -47,9 +47,9 @@ This is [available in Hex](https://hexdocs.pm/rummage_phoenix/), the package can
 
 ### Current Blogs:
 
-  - [Rummage Demo & Basics](https://medium.com/@aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-1-933106ec50ca#.der0yrnvq)
-  - [Using Rummage.Ecto](https://medium.com/@aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-2-8e36558984c2#.vviioi5ia)
-  - [Using Rummage.Phoenix](https://medium.com/@aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-3-7cf5023bc226#.q08478ud2)
+  - [Rummage Demo & Basics](https://medium.com/aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-1-933106ec50ca#.der0yrnvq)
+  - [Using Rummage.Ecto](https://medium.com/aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-2-8e36558984c2#.vviioi5ia)
+  - [Using Rummage.Phoenix](https://medium.com/aditya7iyengar/searching-sorting-and-pagination-in-elixir-phoenix-with-rummage-part-3-7cf5023bc226#.q08478ud2)
 
 ### Coming up next:
 

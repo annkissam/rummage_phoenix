@@ -3,7 +3,7 @@ defmodule Rummage.Phoenix.Mixfile do
 
   @version "2.0.0-rc.0"
   @elixir "~> 1.6"
-  @url "https://github.com/aditya7iyengar/rummage_phoenix"
+  @url "https://github.com/annkissam/rummage_phoenix"
 
   def project do
     [

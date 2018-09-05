@@ -13,6 +13,6 @@ defmodule Rummage.Phoenix do
   seamless integration, please check the information below.
 
   If you want to check a sample application that uses Rummage, please check
-  [this link](https://github.com/aditya7iyengar/rummage_phoenix_example).
+  [this link](https://github.com/annkissam/rummage_phoenix_example).
   """
 end
