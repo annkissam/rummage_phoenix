@@ -22,7 +22,7 @@ defmodule Rummage.Phoenix.Controller do
             value ->
               Map.put(acc,
                       :"#{key}",
-                      apply(__MODULE__, :"__rummage_#{key}_params__", [value]))
+                      apply(unquote(__MODULE__), :"__rummage_#{key}_params__", [value]))
           end
         end)
       end
@@ -50,10 +50,35 @@ defmodule Rummage.Phoenix.Controller do
   end
 
   @doc false
-  def __rummage_search_params__(p), do: p
+  def __rummage_search_params__(params) do
+    params
+    |> Map.to_list()
+    |> Enum.map(&__rummage_format_search_param__/1)
+    |> Enum.into(%{})
+  end
+
+  defp __rummage_format_search_param__({key, val = %{}}) do
+    val = val
+      |> Map.to_list()
+      |> Enum.map(fn {k, v} ->
+        k == "search_term" && {:"#{k}", v} || {:"#{k}", :"#{v}"}
+      end)
+      |> Enum.into(%{})
+
+    {:"#{key}", val}
+  end
+
+  defp __rummage_format_search_param__({key, val}) do
+    {:"#{key}", val}
+  end
 
   @doc false
-  def __rummage_sort_params__(p), do: p
+  def __rummage_sort_params__(params) do
+    params
+    |> Map.to_list()
+    |> Enum.map(fn {k, v} -> {:"#{k}", :"#{v}"} end)
+    |> Enum.into(%{})
+  end
 
   @doc false
   def __rummage_paginate_params__(params) do
