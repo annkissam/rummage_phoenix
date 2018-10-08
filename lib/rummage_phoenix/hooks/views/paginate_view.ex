@@ -24,11 +24,6 @@ defmodule Rummage.Phoenix.PaginateView do
 
   alias Rummage.Phoenix.Config
 
-  @default_first_text "«"
-  @default_prev_text "⟨"
-  @default_next_text "⟩"
-  @default_last_text "»"
-
   def pagination_links(base_url, rummage, opts \\ []) do
     css = Keyword.get(opts, :css, Config.css())
     _pagination_links(base_url, rummage, css, opts)
@@ -41,7 +36,7 @@ defmodule Rummage.Phoenix.PaginateView do
     link_class_fn = Keyword.get(opts, :link_class_fn,
                              css.link_class_fn(:paginate, rummage))
 
-    text_fn = Keyword.get(opts, :text_fn, default_text_fn)
+    text_fn = Keyword.get(opts, :text_fn, css.default_text_fn(:paginate))
 
     css.pagination_links(opts) do
       [
@@ -66,18 +61,6 @@ defmodule Rummage.Phoenix.PaginateView do
     slugs = Keyword.get(opts, :slugs, %{})
 
     {max_pagination_links, slugs}
-  end
-
-  def default_text_fn do
-    fn(page) ->
-      case page do
-        :first -> @default_first_text
-        :prev -> @default_prev_text
-        :next -> @default_next_text
-        :last -> @default_last_text
-        page -> page
-      end
-    end
   end
 
   def page_link(text, href, opts \\ []) do

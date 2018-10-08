@@ -1,6 +1,6 @@
-defmodule Rummage.Phoenix.Bootstrap4 do
+defmodule Rummage.Phoenix.Materialzie do
   @moduledoc """
-  This is the theme adapter for Bootstrap 4.
+  This is the theme adapter for Materialzie.
   """
 
   alias Rummage.Phoenix.PaginateView, as: PView
@@ -13,7 +13,7 @@ defmodule Rummage.Phoenix.Bootstrap4 do
     class = Keyword.get(opts, :class, "")
     tabindex = Keyword.get(opts, :tabindex, -1)
 
-    Phoenix.HTML.Tag.content_tag :li, [class: "page-item #{class}"] do
+    Phoenix.HTML.Tag.content_tag :li, [class: "waves-effect #{class}"] do
       Phoenix.HTML.Link.link([to: href, class: "page-link", tabindex: tabindex],
                              do: text)
     end
@@ -45,7 +45,8 @@ defmodule Rummage.Phoenix.Bootstrap4 do
   end
 
   def ellipsis do
-    page_link("...", "#", class: "disabled")
+    Phoenix.HTML.Tag.content_tag :li, [class: "ellipsis", aria_hidden: true] do
+    end
   end
 
   def sort_link(url, do: html, content_tag: content_tag, class: class) do

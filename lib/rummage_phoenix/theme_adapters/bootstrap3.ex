@@ -32,6 +32,18 @@ defmodule Rummage.Phoenix.Bootstrap3 do
     end
   end
 
+  def default_text_fn(:paginate) do
+    fn(page) ->
+      case page do
+        :first -> "«"
+        :prev -> "⟨"
+        :next -> "⟩"
+        :last -> "»"
+        page -> page
+      end
+    end
+  end
+
   def ellipsis do
     page_link("...", "#", class: "disabled")
   end
