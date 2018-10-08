@@ -41,11 +41,11 @@ defmodule Rummage.Phoenix.Config do
   Returns default `theme` set in the config
   (`:bootstrap in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
-      iex> Phoenix.theme_adapter()
+      iex> Phoenix.css()
       Rummage.Phoenix.Bootstrap3
   """
-  def theme_adapter(application \\ :rummage_phoenix) do
-    config(:theme_adapter, Rummage.Phoenix.Bootstrap3, application)
+  def css(application \\ :rummage_phoenix) do
+    config(:css, Rummage.Phoenix.Bootstrap3, application)
   end
 
   @doc """
