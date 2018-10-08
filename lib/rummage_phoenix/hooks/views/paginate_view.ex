@@ -55,7 +55,7 @@ defmodule Rummage.Phoenix.PaginateView do
     end
   end
 
-  def get_defaults(opts) do
+  defp get_defaults(opts) do
     max_pagination_links = Keyword.get(opts, :max_pagination_links,
                                        Config.max_pagination_links())
     slugs = Keyword.get(opts, :slugs, %{})
@@ -126,7 +126,7 @@ defmodule Rummage.Phoenix.PaginateView do
     href = &rummage_pagination_href(&1, base_url, rummage, slugs)
     link_class_fn = Keyword.get(opts, :link_class_fn,
                                css.link_class_fn(:paginate, rummage))
-    text_fn = Keyword.get(opts, :text_fn, & &1)
+    text_fn = Keyword.get(opts, :text_fn, css.default_text_fn(:paginate))
 
     pages
     |> Enum.map(&text_fn.(&1))

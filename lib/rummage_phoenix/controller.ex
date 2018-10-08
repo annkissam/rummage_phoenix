@@ -62,32 +62,26 @@ defmodule Rummage.Phoenix.Controller do
   def __format_search_params__(params) do
     params
     |> Map.to_list()
-    |> Enum.map(&__format_search_param__/1)
+    |> Enum.map(&atomify/1)
     |> Enum.into(%{})
-  end
-
-  defp __format_search_param__({key, val = %{}}) do
-    val = val
-      |> Map.to_list()
-      |> Enum.map(fn {k, v} ->
-        k == "search_term" && {:"#{k}", v} || {:"#{k}", :"#{v}"}
-      end)
-      |> Enum.into(%{})
-
-    {:"#{key}", val}
-  end
-
-  defp __format_search_param__({key, val}) do
-    {:"#{key}", val}
   end
 
   @doc false
   def __format_sort_params__(params) do
     params
     |> Map.to_list()
-    |> Enum.map(fn {k, v} -> {:"#{k}", :"#{v}"} end)
+    |> Enum.map(&atomify/1)
     |> Enum.into(%{})
   end
+
+  defp atomify({"assoc", v}), do: atomify({:assoc, v})
+  defp atomify({"search_term", v}), do: {:search_term, v}
+  defp atomify({k, "true"}), do: {:"#{k}", true}
+  defp atomify({k, "false"}), do: {:"#{k}", false}
+  defp atomify({k, v}) when is_map(v) do
+    {:"#{k}", v |> Map.to_list() |> Enum.map(&atomify/1) |> Enum.into(%{})}
+  end
+  defp atomify({k, v}), do: {:"#{k}", :"#{v}"}
 
   @doc false
   def __format_paginate_params__(params) do
