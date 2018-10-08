@@ -32,6 +32,10 @@ defmodule Rummage.Phoenix.Bootstrap4 do
     end
   end
 
+  def ellipsis do
+    page_link("...", "#", class: "disabled")
+  end
+
   def default_text_fn(:paginate) do
     fn(page) ->
       case page do
@@ -44,17 +48,36 @@ defmodule Rummage.Phoenix.Bootstrap4 do
     end
   end
 
-  def ellipsis do
-    page_link("...", "#", class: "disabled")
+  def sort_link(text, href, opts \\ []) do
+    class = Keyword.get(opts, :class, "float-right")
+    Phoenix.HTML.Link.link([to: href, class: "#{class}"], do: text)
   end
 
-  def sort_link(url, do: html, content_tag: content_tag, class: class) do
-    Phoenix.HTML.Tag.content_tag content_tag, [class: class, href: url], do: html
+  def default_text_fn(:paginate) do
+    fn(page) ->
+      case page do
+        :first -> "«"
+        :prev -> "⟨"
+        :next -> "⟩"
+        :last -> "»"
+        page -> page
+      end
+    end
   end
 
-  def sort_link(url, opts \\ []) do
-    sort_link(url, do: Keyword.fetch!(opts, :do),
-                   content_tag: Keyword.get(opts, :content_tag, :a),
-                   class: Keyword.get(opts, :class, "page-link"))
+  def default_text_fn(:sort) do
+    fn(order) ->
+      case order do
+        :asc ->
+          Phoenix.HTML.Tag.content_tag :span,
+            [class: "oi oi-sort-descending"], do: ""
+        :desc ->
+          Phoenix.HTML.Tag.content_tag :span,
+            [class: "oi oi-sort-ascending"], do: ""
+        nil ->
+          Phoenix.HTML.Tag.content_tag :span,
+            [class: "oi oi-resize-height"], do: ""
+      end
+    end
   end
 end
