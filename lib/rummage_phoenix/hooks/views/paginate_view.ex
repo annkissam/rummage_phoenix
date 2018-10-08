@@ -66,12 +66,15 @@ defmodule Rummage.Phoenix.PaginateView do
 
     per_page = paginate_params.per_page
     label = Keyword.get(opts, :all_label, "All")
+    action = Keyword.get(opts, :action, :index)
 
     case per_page == -1 do
       true -> page_link "#", :disabled, do: label
       false ->
-        page_link index_path(opts, [conn, :index,
-          transform_params(rummage, -1, 1, opts)]), do: label
+        page_link(
+          index_path(opts, [conn, action, transform_params(rummage, -1, 1, opts)]),
+          do: label
+        )
     end
   end
 
@@ -96,11 +99,21 @@ defmodule Rummage.Phoenix.PaginateView do
       page = paginate_params.page
       per_page = paginate_params.per_page
       label = Keyword.get(opts, :first_label, "First")
+      action = Keyword.get(opts, :action, :index)
 
       case page == 1 do
-        true -> theme_adapter.page_link("#", :disabled, do: label)
-        false -> theme_adapter.page_link(index_path(opts, [conn, :index,
-            transform_params(rummage, per_page, 1, opts)]), do: label)
+        true ->
+          theme_adapter.page_link("#", :disabled, do: label)
+
+        false ->
+          theme_adapter.page_link(
+            index_path(opts, [
+              conn,
+              action,
+              transform_params(rummage, per_page, 1, opts)
+            ]),
+            do: label
+          )
       end
     end
   end
@@ -111,12 +124,16 @@ defmodule Rummage.Phoenix.PaginateView do
     page = paginate_params.page
     per_page = paginate_params.per_page
     label = opts[:previous_label] || "Previous"
+    action = Keyword.get(opts, :action, :index)
 
     case page <= 1 do
-      true -> page_link "#", :disabled, do: label
+      true ->
+        page_link("#", :disabled, do: label)
+
       false ->
         page_link index_path(opts, [conn, :index,
           transform_params(rummage, per_page, page - 1, opts)]), do: label
+            action,
     end
   end
 
@@ -127,6 +144,7 @@ defmodule Rummage.Phoenix.PaginateView do
     per_page = paginate_params.per_page
     max_page = paginate_params.max_page
     max_page_links = opts[:max_page_links] || 5 #Rummage.Phoenix.default_max_page_links
+    action = Keyword.get(opts, :action, :index)
 
     lower_limit = cond do
       page <= div(max_page_links, 2) -> 1
@@ -143,6 +161,7 @@ defmodule Rummage.Phoenix.PaginateView do
         true ->
           page_link index_path(opts, [conn, :index,
             transform_params(rummage, per_page, page_num, opts)]), do: page_num
+              action,
       end
     end)
   end
@@ -154,12 +173,14 @@ defmodule Rummage.Phoenix.PaginateView do
     per_page = paginate_params.per_page
     max_page = paginate_params.max_page
     label = opts[:next_label] || "Next"
+    action = Keyword.get(opts, :action, :index)
 
     case page >= max_page do
       true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
           transform_params(rummage, per_page, page + 1, opts)]), do: label
+            action,
     end
   end
 
@@ -171,12 +192,14 @@ defmodule Rummage.Phoenix.PaginateView do
     # max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
     max_page = paginate_params.max_page
     label = opts[:last_label] || "Last"
+    action = Keyword.get(opts, :action, :index)
 
     case page == max_page do
       true -> page_link "#", :disabled, do: label
       false ->
         page_link index_path(opts, [conn, :index,
           transform_params(rummage, per_page, max_page, opts)]), do: label
+            action,
     end
   end
 
