@@ -32,6 +32,15 @@ defmodule Rummage.Phoenix.Materialize do
     end
   end
 
+  def ellipsis do
+    page_link("...", "#", class: "disabled")
+  end
+
+  def sort_link(text, href, opts \\ []) do
+    class = Keyword.get(opts, :class, "right")
+    Phoenix.HTML.Link.link([to: href, class: "#{class}"], do: text)
+  end
+
   def default_text_fn(:paginate) do
     fn(page) ->
       case page do
@@ -56,17 +65,22 @@ defmodule Rummage.Phoenix.Materialize do
     end
   end
 
-  def ellipsis do
-    page_link("...", "#", class: "disabled")
-  end
-
-  def sort_link(url, do: html, content_tag: content_tag, class: class) do
-    Phoenix.HTML.Tag.content_tag content_tag, [class: class, href: url], do: html
-  end
-
-  def sort_link(url, opts \\ []) do
-    sort_link(url, do: Keyword.fetch!(opts, :do),
-                   content_tag: Keyword.get(opts, :content_tag, :a),
-                   class: Keyword.get(opts, :class, "page-link"))
+  def default_text_fn(:sort) do
+    fn(order) ->
+      case order do
+        :asc ->
+          Phoenix.HTML.Tag.content_tag :i, [class: "material-icons"] do
+            "keyboard_arrow_down"
+          end
+        :desc ->
+          Phoenix.HTML.Tag.content_tag :i, [class: "material-icons"] do
+            "keyboard_arrow_up"
+          end
+        nil ->
+          Phoenix.HTML.Tag.content_tag :i, [class: "material-icons"] do
+            "unfold_more"
+          end
+      end
+    end
   end
 end
