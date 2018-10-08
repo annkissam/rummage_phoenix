@@ -3,6 +3,8 @@ defmodule Rummage.Phoenix.Foundation do
   This is the theme adapter for Foundation.
   """
 
+  use Rummage.Phoenix.ThemeAdapter
+
   alias Rummage.Phoenix.PaginateView, as: PView
 
   def pagination_links(opts, do: expression) do

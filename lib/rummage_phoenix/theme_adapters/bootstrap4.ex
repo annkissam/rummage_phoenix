@@ -3,6 +3,8 @@ defmodule Rummage.Phoenix.Bootstrap4 do
   This is the theme adapter for Bootstrap 4.
   """
 
+  use Rummage.Phoenix.ThemeAdapter
+
   alias Rummage.Phoenix.PaginateView, as: PView
 
   def pagination_links(opts, do: expression) do
