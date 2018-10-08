@@ -121,21 +121,18 @@ defmodule Rummage.Phoenix.PaginateView do
 
     if page in show_pages do
       if max_pagination_links != rummage.paginate.max_page do
-        page_links = page_links ++
-          [page_link("..", "#", class: link_class_fn.(nil))]
+        page_links = page_links ++ [css.ellipsis]
       end
     else
       if max_pagination_links != rummage.paginate.max_page do
-        page_links = page_links ++
-          [page_link("..", "#", class: link_class_fn.(nil))]
+        page_links = page_links ++ [css.ellipsis]
       end
 
       page_links = page_links ++
         [_get_page_links([page], base_url, rummage, css, opts)]
 
       if max_pagination_links != rummage.paginate.max_page do
-        page_links = page_links ++
-          [page_link("..", "#", class: link_class_fn.(nil))]
+        page_links = page_links ++ [css.ellipsis]
       end
     end
 

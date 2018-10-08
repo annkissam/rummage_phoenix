@@ -1,6 +1,6 @@
-defmodule Rummage.Phoenix.Bootstrap3 do
+defmodule Rummage.Phoenix.Foundation do
   @moduledoc """
-  This is the theme adapter for Bootstrap 3.
+  This is the theme adapter for Foundation.
   """
 
   alias Rummage.Phoenix.PaginateView, as: PView
@@ -33,7 +33,8 @@ defmodule Rummage.Phoenix.Bootstrap3 do
   end
 
   def ellipsis do
-    page_link("...", "#", class: "disabled")
+    Phoenix.HTML.Tag.content_tag :li, [class: "ellipsis", aria_hidden: true] do
+    end
   end
 
   def sort_link(url, do: html, content_tag: content_tag, class: class) do

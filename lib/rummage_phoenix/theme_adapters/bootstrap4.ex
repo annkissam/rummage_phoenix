@@ -3,7 +3,7 @@ defmodule Rummage.Phoenix.Bootstrap4 do
   This is the theme adapter for Bootstrap 4.
   """
 
-  import Rummage.Phoenix.PaginateView
+  alias Rummage.Phoenix.PaginateView, as: PView
 
   def pagination_links(opts, do: expression) do
     Phoenix.HTML.Tag.content_tag :ul, [class: "pagination"], do: expression
@@ -23,14 +23,17 @@ defmodule Rummage.Phoenix.Bootstrap4 do
     fn(page) ->
       case page do
         page when page in ~w(first prev)a ->
-          rummage_pagination_current?(1, rummage) && "disabled" || ""
+          PView.rummage_pagination_current?(1, rummage) && "disabled" || ""
         page when page in ~w(next last)a ->
-          rummage_pagination_current?(:max, rummage) && "disabled" || ""
-        nil -> "disabled"
+          PView.rummage_pagination_current?(:max, rummage) && "disabled" || ""
         page ->
-          rummage_pagination_current?(page, rummage) && "active" || ""
+          PView.rummage_pagination_current?(page, rummage) && "active" || ""
       end
     end
+  end
+
+  def ellipsis do
+    page_link("...", "#", class: "disabled")
   end
 
   def sort_link(url, do: html, content_tag: content_tag, class: class) do
