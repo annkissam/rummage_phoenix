@@ -57,7 +57,7 @@ defmodule Rummage.Phoenix.SearchView do
 
     form_for(conn, apply(opts[:helpers], String.to_atom("#{opts[:struct]}_path"), [conn, :index]), [as: :rummage, method: :get], fn(f) ->
       {
-      apply(opts[:helpers], String.to_atom("#{opts[:struct]}_path"), [conn, action]),
+        :safe,
         elem(hidden_input(f, :sort, value: sort, class: "form-control"), 1) ++
         elem(hidden_input(f, :paginate, value: paginate, class: "form-control"), 1) ++
         elem(inputs_for(f, :search, fn(s) ->
