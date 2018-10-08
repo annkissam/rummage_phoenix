@@ -59,6 +59,11 @@ defmodule Rummage.Phoenix.Controller do
   end
 
   @doc false
+  def __format_search_params__(params) when is_binary(params) do
+    params
+    |> Poison.decode!()
+    |> __format_search_params__()
+  end
   def __format_search_params__(params) do
     params
     |> Map.to_list()
@@ -67,6 +72,11 @@ defmodule Rummage.Phoenix.Controller do
   end
 
   @doc false
+  def __format_sort_params__(params) when is_binary(params) do
+    params
+    |> Poison.decode!()
+    |> __format_sort_params__()
+  end
   def __format_sort_params__(params) do
     params
     |> Map.to_list()
@@ -75,20 +85,37 @@ defmodule Rummage.Phoenix.Controller do
   end
 
   defp atomify({"assoc", v}), do: atomify({:assoc, v})
-  defp atomify({"search_term", v}), do: {:search_term, v}
+  defp atomify({"order", v}), do: {:order, :"#{v}"}
+  defp atomify({"field", v}), do: {:field, :"#{v}"}
+  defp atomify({"inner", v}), do: {:inner, :"#{v}"}
+  defp atomify({"left", v}), do: {:left, :"#{v}"}
+  defp atomify({"right", v}), do: {:right, :"#{v}"}
+  defp atomify({"cross", v}), do: {:cross, :"#{v}"}
+  defp atomify({"full", v}), do: {:full, :"#{v}"}
+  defp atomify({"inner_lateral", v}), do: {:inner_lateral, :"#{v}"}
+  defp atomify({"left_lateral", v}), do: {:left_lateral, :"#{v}"}
+  defp atomify({"search_expr", v}), do: {:search_term, :"#{v}"}
+  defp atomify({"search_type", v}), do: {:search_type, :"#{v}"}
   defp atomify({k, "true"}), do: {:"#{k}", true}
   defp atomify({k, "false"}), do: {:"#{k}", false}
   defp atomify({k, v}) when is_map(v) do
     {:"#{k}", v |> Map.to_list() |> Enum.map(&atomify/1) |> Enum.into(%{})}
   end
-  defp atomify({k, v}), do: {:"#{k}", :"#{v}"}
+  defp atomify({k, v}), do: {:"#{k}", v}
 
   @doc false
+  def __format_paginate_params__(params) when is_binary(params) do
+    params
+    |> Poison.decode!()
+    |> __format_paginate_params__()
+  end
   def __format_paginate_params__(params) do
-    Enum.reduce(~w{per_page page}, %{}, fn(key, acc) ->
+    Enum.reduce(~w{per_page page max_page total_count}, %{}, fn(key, acc) ->
       case Map.get(params, key) do
         nil -> acc
-        value -> Map.put(acc, :"#{key}", String.to_integer(value))
+        value when is_binary(value) ->
+          Map.put(acc, :"#{key}", String.to_integer(value))
+        value -> Map.put(acc, :"#{key}", value)
       end
     end)
   end
