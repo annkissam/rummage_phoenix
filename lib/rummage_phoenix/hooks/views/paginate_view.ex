@@ -22,181 +22,189 @@ defmodule Rummage.Phoenix.PaginateView do
 
   """
 
-  @doc """
-  This macro includes the helper functions for pagination
+  alias Rummage.Phoenix.Config
 
-  Provides helper functions `pagination_link/3` for creating pagination links in an html.eex
-  file of using `Phoenix`.
+  @default_first_text "«"
+  @default_prev_text "⟨"
+  @default_next_text "⟩"
+  @default_last_text "»"
 
-  Usage:
-  Just add the following code in the index template. Make sure that you're passing
-  rummage from the controller. Please look at the
-  [README](https://github.com/Excipients/rummage_phoenix) for more details
+  def pagination_links(base_url, rummage, opts \\ []) do
+    css = Keyword.get(opts, :css, Config.css())
+    _pagination_links(base_url, rummage, css, opts)
+  end
 
-  ```elixir
-  pagination_links(@conn, @rummage)
-  ```
-  """
-  def pagination_links(conn, rummage, opts \\ [])
-  def pagination_links(conn, rummage, opts) do
-    case Map.equal?(rummage, %{}) do
-      false ->
-        theme_adapter = Keyword.get(opts, :theme_adapter, Rummage.Phoenix.Bootstrap3Min)
+  defp _pagination_links(base_url, rummage, css, opts) do
+    {max_pagination_links, slugs} = get_defaults(opts)
 
-        theme_adapter.pagination_links do
-          raw_links(conn, rummage, opts)
-        end
-      true -> ""
+    href = &rummage_pagination_href(&1, base_url, rummage, slugs)
+    link_class_fn = Keyword.get(opts, :link_class_fn,
+                             css.link_class_fn(:paginate, rummage))
+
+    text_fn = Keyword.get(opts, :text_fn, default_text_fn)
+
+    css.pagination_links(opts) do
+      [
+        _page_link(text_fn.(:first), href.(1), css,
+                                               class: link_class_fn.(:first)),
+        _page_link(text_fn.(:prev), href.(:prev), css,
+                                              class: link_class_fn.(:prev)),
+        _page_links(max_pagination_links, base_url, rummage, css, opts),
+        _page_link(text_fn.(:next), href.(:next), css,
+                                              class: link_class_fn.(:next)),
+        _page_link(text_fn.(:last), href.(:last), css,
+                                              class: link_class_fn.(:last)),
+      ]
+      |> List.flatten()
+      |> Enum.filter(& &1)
     end
   end
 
-  defdelegate page_link(url, status, kw), to: Rummage.Phoenix.Bootstrap3Min
-  defdelegate page_link(url, kw), to: Rummage.Phoenix.Bootstrap3Min
+  def get_defaults(opts) do
+    max_pagination_links = Keyword.get(opts, :max_pagination_links,
+                                       Config.max_pagination_links())
+    slugs = Keyword.get(opts, :slugs, %{})
 
-  def raw_links(conn, rummage, opts \\ []) do
-    Enum.reject([first_page_link(conn, rummage, opts)] ++
-    [previous_page_link(conn, rummage, opts)] ++
-    middle_page_links(conn, rummage, opts) ++
-    [next_page_link(conn, rummage, opts)] ++
-    [last_page_link(conn, rummage, opts)], &is_nil/1)
+    {max_pagination_links, slugs}
   end
 
-  defp all_page_link(conn, rummage, opts) do
-    paginate_params = rummage.paginate
-
-    per_page = paginate_params.per_page
-    label = Keyword.get(opts, :all_label, "All")
-
-    case per_page == -1 do
-      true -> page_link "#", :disabled, do: label
-      false ->
-        page_link index_path(opts, [conn, :index,
-          transform_params(rummage, -1, 1, opts)]), do: label
-    end
-  end
-
-  # def per_page_link(conn, rummage, opts \\ []) do
-  #   import Phoenix.HTML.Form
-
-  #   paginate_params = rummage.paginate
-
-  #   form_for conn, index_path(opts, [conn, :index]), [as: :params, method: :get], fn(form) ->
-  #     input = number_input(form, :per_page, value: paginate_params.per_page)
-  #     submit = submit("Set Per Page", class: "btn btn-default")
-  #     [input, submit]
-  #   end
-  # end
-
-  defp first_page_link(conn, rummage, opts) do
-    if Keyword.get(opts, :first, true) do
-      theme_adapter = Keyword.get(opts, :theme_adapter,
-                                  Rummage.Phoenix.Bootstrap3Min)
-      paginate_params = rummage.paginate
-
-      page = paginate_params.page
-      per_page = paginate_params.per_page
-      label = Keyword.get(opts, :first_label, "First")
-
-      case page == 1 do
-        true -> theme_adapter.page_link("#", :disabled, do: label)
-        false -> theme_adapter.page_link(index_path(opts, [conn, :index,
-            transform_params(rummage, per_page, 1, opts)]), do: label)
+  def default_text_fn do
+    fn(page) ->
+      case page do
+        :first -> @default_first_text
+        :prev -> @default_prev_text
+        :next -> @default_next_text
+        :last -> @default_last_text
+        page -> page
       end
     end
   end
 
-  defp previous_page_link(conn, rummage, opts) do
-    paginate_params = rummage.paginate
+  def page_link(text, href, opts \\ []) do
+    css = Keyword.get(opts, :css, Config.css())
+    _page_link(text, href, css, opts)
+  end
 
-    page = paginate_params.page
-    per_page = paginate_params.per_page
-    label = opts[:previous_label] || "Previous"
+  defp _page_link(text, href, css, opts) do
+    css.page_link(text, href, opts)
+  end
 
-    case page <= 1 do
-      true -> page_link "#", :disabled, do: label
-      false ->
-        page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, page - 1, opts)]), do: label
+  def page_links(max_pagination_links, base_url, rummage, opts \\ []) do
+    css = Keyword.get(opts, :css, Config.css())
+    _page_links(max_pagination_links, base_url, rummage, css, opts)
+  end
+
+  defp _page_links(max_pagination_links, base_url, rummage, css, opts) do
+    case max_pagination_links < rummage.paginate.max_page do
+      false -> _get_page_links(:all, base_url, rummage, css, opts)
+      _ -> _get_page_links(:max, base_url, rummage, css, opts)
     end
   end
 
-  defp middle_page_links(conn, rummage, opts) do
-    paginate_params = rummage.paginate
+  defp _get_page_links(page_nums, base_url, rummage, css, opts)
+  defp _get_page_links(:all, base_url, rummage, css, opts) do
+    _get_page_links(1..rummage.paginate.max_page, base_url, rummage, css, opts)
+  end
+  defp _get_page_links(:max, base_url, rummage, css, opts) do
+    {max_pagination_links, _slugs} = get_defaults(opts)
+    before_pages = 1..div(max_pagination_links, 2) |> Enum.to_list()
+    after_pages = (div(max_pagination_links, 2) - 1)..0
+                  |> Enum.map(fn(x) -> rummage.paginate.max_page - x end)
+    show_pages = before_pages ++ after_pages
 
-    page = paginate_params.page
-    per_page = paginate_params.per_page
-    max_page = paginate_params.max_page
-    max_page_links = opts[:max_page_links] || 5 #Rummage.Phoenix.default_max_page_links
+    link_class_fn = Keyword.get(opts, :link_class_fn,
+                             css.link_class_fn(:paginate, rummage))
 
-    lower_limit = cond do
-      page <= div(max_page_links, 2) -> 1
-      page >= (max_page - div(max_page_links, 2)) -> Enum.max([0, max_page - max_page_links]) + 1
-      true -> page - div(max_page_links, 2)
-    end
+    page_links = [_get_page_links(before_pages, base_url, rummage, css, opts)]
 
-    upper_limit = lower_limit + max_page_links - 1
+    page = rummage.paginate.page
 
-    Enum.map(lower_limit..upper_limit, fn(page_num) ->
-      cond do
-        page == page_num -> page_link "#", :active, do: page_num
-        page_num > max_page -> ""
-        true ->
-          page_link index_path(opts, [conn, :index,
-            transform_params(rummage, per_page, page_num, opts)]), do: page_num
+    if page in show_pages do
+      if max_pagination_links != rummage.paginate.max_page do
+        page_links = page_links ++
+          [page_link("..", "#", class: link_class_fn.(nil))]
       end
-    end)
-  end
+    else
+      if max_pagination_links != rummage.paginate.max_page do
+        page_links = page_links ++
+          [page_link("..", "#", class: link_class_fn.(nil))]
+      end
 
-  defp next_page_link(conn, rummage, opts) do
-    paginate_params = rummage.paginate
+      page_links = page_links ++
+        [_get_page_links([page], base_url, rummage, css, opts)]
 
-    page = paginate_params.page
-    per_page = paginate_params.per_page
-    max_page = paginate_params.max_page
-    label = opts[:next_label] || "Next"
-
-    case page >= max_page do
-      true -> page_link "#", :disabled, do: label
-      false ->
-        page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, page + 1, opts)]), do: label
+      if max_pagination_links != rummage.paginate.max_page do
+        page_links = page_links ++
+          [page_link("..", "#", class: link_class_fn.(nil))]
+      end
     end
+
+    page_links ++ [_get_page_links(after_pages, base_url, rummage, css, opts)]
+  end
+  defp _get_page_links(pages, base_url, rummage, css, opts) do
+    {_max_pagination_links, slugs} = get_defaults(opts)
+    href = &rummage_pagination_href(&1, base_url, rummage, slugs)
+    link_class_fn = Keyword.get(opts, :link_class_fn,
+                               css.link_class_fn(:paginate, rummage))
+    text_fn = Keyword.get(opts, :text_fn, & &1)
+
+    pages
+    |> Enum.map(&text_fn.(&1))
+    |> Enum.map(&_page_link(&1, href.(&1), css, class: link_class_fn.(&1)))
   end
 
-  defp last_page_link(conn, rummage, opts) do
-    paginate_params = rummage.paginate
+  def rummage_pagination_href(page \\ 1, base_url, rummage, slugs \\ %{})
+  def rummage_pagination_href(:next, base_url, rummage, slugs) do
+    paginate = rummage.paginate
+    max_page = paginate.max_page
+    page = paginate.page
 
-    page = paginate_params.page
-    per_page = paginate_params.per_page
-    # max_page_links = String.to_integer(paginate_params["max_page_links"] || "4")
-    max_page = paginate_params.max_page
-    label = opts[:last_label] || "Last"
-
-    case page == max_page do
-      true -> page_link "#", :disabled, do: label
-      false ->
-        page_link index_path(opts, [conn, :index,
-          transform_params(rummage, per_page, max_page, opts)]), do: label
+    page = case max_page do
+      nil -> page + 1
+      max_page when page >= max_page -> page
+      _ -> page + 1
     end
+
+    rummage_pagination_href(page, base_url, rummage, slugs)
   end
 
-  defp transform_params(rummage, per_page, page, opts)
-  defp transform_params(rummage, per_page, page,
-                        %{slugs: slugs, slugs_params: slugs_params})
-  do
-    rummage = %{rummage: Map.put(rummage, "paginate",
-                                 %{"per_page"=> per_page, "page"=> page})}
-    slugs ++ Map.merge(rummage, slugs_params)
-  end
-  defp transform_params(rummage, per_page, page, _opts) do
-    %{"rummage" => Map.put(rummage, "paginate",
-                           %{"per_page"=> per_page, "page"=> page})}
+  def rummage_pagination_href(:prev, base_url, rummage, slugs) do
+    paginate = rummage.paginate
+    max_page = paginate.max_page
+    page = paginate.page
+
+    page = case max_page do
+      nil -> page - 1
+      max_page when page <= 1 -> page
+      _ -> page - 1
+    end
+
+    rummage_pagination_href(page, base_url, rummage, slugs)
   end
 
-  defp index_path(opts, params) do
-    helpers = opts[:helpers]
-    path_function_name = String.to_atom("#{opts[:struct]}_path")
+  def rummage_pagination_href(:last, base_url, rummage, slugs) do
+    paginate = rummage.paginate
+    max_page = paginate.max_page
 
-    apply(helpers, path_function_name, params)
+    rummage_pagination_href(max_page, base_url, rummage, slugs)
+  end
+
+  def rummage_pagination_href(page, base_url, rummage, slugs) do
+    paginate = rummage.paginate
+
+    new_rummage = %{rummage | paginate: %{paginate | page: page}}
+    params = slugs
+      |> Map.merge(%{rummage: new_rummage})
+      |> Plug.Conn.Query.encode()
+
+    base_url <> "?" <> params
+  end
+
+  def rummage_pagination_current?(:max, rummage) do
+    rummage.paginate.page == rummage.paginate.max_page
+  end
+
+  def rummage_pagination_current?(page, rummage) do
+    rummage.paginate.page == page
   end
 end
