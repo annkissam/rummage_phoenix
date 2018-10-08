@@ -1,6 +1,6 @@
-defmodule Rummage.Phoenix.Materialzie do
+defmodule Rummage.Phoenix.Materialize do
   @moduledoc """
-  This is the theme adapter for Materialzie.
+  This is the theme adapter for Materialize.
   """
 
   alias Rummage.Phoenix.PaginateView, as: PView
@@ -35,18 +35,29 @@ defmodule Rummage.Phoenix.Materialzie do
   def default_text_fn(:paginate) do
     fn(page) ->
       case page do
-        :first -> "«"
-        :prev -> "⟨"
-        :next -> "⟩"
-        :last -> "»"
+        :first ->
+          Phoenix.HTML.Tag.content_tag :i, [class: "material-icons"] do
+            "first_page"
+          end
+        :prev ->
+          Phoenix.HTML.Tag.content_tag :i, [class: "material-icons"] do
+            "chevron_left"
+          end
+        :next ->
+          Phoenix.HTML.Tag.content_tag :i, [class: "material-icons"] do
+            "chevron_right"
+          end
+        :last ->
+          Phoenix.HTML.Tag.content_tag :i, [class: "material-icons"] do
+            "last_page"
+          end
         page -> page
       end
     end
   end
 
   def ellipsis do
-    Phoenix.HTML.Tag.content_tag :li, [class: "ellipsis", aria_hidden: true] do
-    end
+    page_link("...", "#", class: "disabled")
   end
 
   def sort_link(url, do: html, content_tag: content_tag, class: class) do
