@@ -55,6 +55,7 @@ defmodule Rummage.Phoenix.SortView do
     desc_icon = Keyword.get(opts, :desc_icon)
     desc_text = Keyword.get(opts, :desc_text, "↓")
     rummage_key = Keyword.get(opts, :rummage_key, :rummage)
+    action = Keyword.get(opts, :action, :index)
 
     # Drop pagination unless we're showing the entire result set
     rummage_params = if rummage.params.paginate && rummage.params.paginate.per_page == -1 do
@@ -76,14 +77,14 @@ defmodule Rummage.Phoenix.SortView do
           rummage_params = rummage_params
           |> Map.put(:sort, %{name: field, order: "asc"})
 
-          url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
+          url = index_path(opts, [conn, action, %{rummage_key => rummage_params}])
           # sort_text_or_image(url, [img: asc_icon, text: asc_text], name)
       end
     else
       rummage_params = rummage_params
       |> Map.put(:sort, %{name: field, order: "asc"})
 
-      url = index_path(opts, [conn, :index, %{rummage_key => rummage_params}])
+      url = index_path(opts, [conn, action, %{rummage_key => rummage_params}])
       # sort_text_or_image(url, [], name)
     end
   end
