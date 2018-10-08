@@ -20,15 +20,20 @@ defmodule Rummage.Phoenix.Semantic do
 
   def link_class_fn(:paginate, rummage) do
     fn(page) ->
-      case page do
-        page when page in ~w(first prev)a ->
-          PView.rummage_pagination_current?(1, rummage) && "disabled" || ""
-        page when page in ~w(next last)a ->
-          PView.rummage_pagination_current?(:max, rummage) && "disabled" || ""
-        page ->
-          PView.rummage_pagination_current?(page, rummage) && "active" || ""
-      end
+      _link_class(:paginate, page, rummage)
     end
+  end
+
+  defp _link_class(:paginate, page, rummage) when page in ~w(first prev)a do
+    PView.rummage_pagination_current?(1, rummage) && "disabled" || ""
+  end
+
+  defp _link_class(:paginate, page, rummage) when page in ~w(next last)a do
+    PView.rummage_pagination_current?(:max, rummage) && "disabled" || ""
+  end
+
+  defp _link_class(:paginate, page, rummage) do
+    PView.rummage_pagination_current?(page, rummage) && "active" || ""
   end
 
   def ellipsis do
