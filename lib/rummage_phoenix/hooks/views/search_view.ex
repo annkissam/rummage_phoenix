@@ -55,45 +55,66 @@ defmodule Rummage.Phoenix.SearchView do
     form_class = Keyword.get(link_params, :form_class, "form-inline")
     fields = Keyword.fetch!(link_params, :fields)
 
-    form_for(conn, apply(opts[:helpers], String.to_atom("#{opts[:struct]}_path"), [conn, :index]), [as: :rummage, method: :get, class: form_class], fn(f) ->
-      {
-        :safe,
-        elem(hidden_input(f, :sort, value: sort, class: "form-control"), 1) ++
-        elem(hidden_input(f, :paginate, value: paginate, class: "form-control"), 1) ++
-        elem(inputs_for(f, :search, fn(s) ->
-          {
-            :safe,
-            inner_form(s, fields, search)
-          }
-          end), 1) ++
-        elem(submit(raw(button_label), class: button_class), 1)
-      }
-    end)
+    form_for(
+      conn,
+      apply(opts[:helpers], String.to_atom("#{opts[:struct]}_path"), [conn, :index]),
+      [as: :rummage, method: :get, class: form_class],
+      fn f ->
+        {
+          :safe,
+          elem(hidden_input(f, :sort, value: sort, class: "form-control"), 1) ++
+            elem(hidden_input(f, :paginate, value: paginate, class: "form-control"), 1) ++
+            elem(
+              inputs_for(f, :search, fn s ->
+                {
+                  :safe,
+                  inner_form(s, fields, search)
+                }
+              end),
+              1
+            ) ++
+            elem(submit(raw(button_label), class: button_class), 1)
+        }
+      end
+    )
   end
 
   defp inner_form(s, fields, search) do
-    Enum.map(fields, fn(field) ->
+    Enum.map(fields, fn field ->
       field_name = elem(field, 0)
       field_params = elem(field, 1)
       label = field_params[:label] || "Search by #{Phoenix.Naming.humanize(field_name)}"
       search_type = field_params[:search_type] || "like"
-      input_type = field_params[:input_type] || :search_input
+      _input_type = field_params[:input_type] || :search_input
       search_class = field_params[:search_class] || "form-control"
       placeholder = field_params[:placeholder] || ""
-      assoc = case field_params[:assoc] do
+
+      assoc =
+        case field_params[:assoc] do
           nil -> ""
           assocs -> Enum.join(assocs, " -> ")
         end
 
       elem(label(s, field_name, label, class: "control-label"), 1) ++
-      elem(inputs_for(s, field_name, fn(e) ->
-        {
-          :safe,
-          elem(hidden_input(e, :search_type, value: search_type, class: "form-control"), 1) ++
-          elem(hidden_input(e, :assoc, value: assoc, class: "form-control"), 1) ++
-          elem(search_input(e, :search_term, value: search[Atom.to_string(field_name)]["search_term"], class: search_class, placeholder: placeholder), 1)
-        }
-        end), 1)
-    end) |> Enum.reduce([], & &2 ++ &1)
+        elem(
+          inputs_for(s, field_name, fn e ->
+            {
+              :safe,
+              elem(hidden_input(e, :search_type, value: search_type, class: "form-control"), 1) ++
+                elem(hidden_input(e, :assoc, value: assoc, class: "form-control"), 1) ++
+                elem(
+                  search_input(e, :search_term,
+                    value: search[Atom.to_string(field_name)]["search_term"],
+                    class: search_class,
+                    placeholder: placeholder
+                  ),
+                  1
+                )
+            }
+          end),
+          1
+        )
+    end)
+    |> Enum.reduce([], &(&2 ++ &1))
   end
 end

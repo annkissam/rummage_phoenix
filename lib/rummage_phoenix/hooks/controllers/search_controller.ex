@@ -27,13 +27,6 @@ defmodule Rummage.Phoenix.SearchController do
       iex> SearchController.rummage(rummage)
       %{}
 
-  When `rummage` passed is not an empty `Map`, but
-  the value corresponding to `"search"` key is an empty `String`,
-  it returns and empty `Map`:
-      iex> alias Rummage.Phoenix.SearchController
-      iex> rummage = %{"search" => ""}
-      iex> SearchController.rummage(rummage)
-      %{}
 
   When `rummage` passed is not an empty `Map`, but
   the value corresponding to `"search"` key is a `Map`,
@@ -47,14 +40,18 @@ defmodule Rummage.Phoenix.SearchController do
   """
   def rummage(rummage) do
     search_params = Map.get(rummage, "search")
+
     case search_params do
-      s when s in [nil, "", %{}] -> %{}
+      s when s in [nil, "", %{}] ->
+        %{}
+
       _ ->
-        search_params = search_params
-        |> Map.to_list
-        |> Enum.map(&change_assoc_to_a_one_member_list &1)
-        |> Enum.reject(fn(x) -> elem(x, 1) == "" end)
-        |> Enum.into(%{})
+        search_params =
+          search_params
+          |> Map.to_list()
+          |> Enum.map(&change_assoc_to_a_one_member_list(&1))
+          |> Enum.reject(fn x -> elem(x, 1) == "" end)
+          |> Enum.into(%{})
 
         search_params
     end
@@ -63,10 +60,17 @@ defmodule Rummage.Phoenix.SearchController do
   # This is temporary until we figure out how to add multiple assoc to a form
   defp change_assoc_to_a_one_member_list({field, params}) do
     case params["assoc"] do
-      nil -> {field, Map.put(params, "assoc", [])}
-      assoc when assoc == "" -> {field, Map.put(params, "assoc", [])}
-      assoc when is_binary(assoc) -> {field, Map.put(params, "assoc", String.split(assoc, " -> "))}
-      _ -> {field, params}
+      nil ->
+        {field, Map.put(params, "assoc", [])}
+
+      assoc when assoc == "" ->
+        {field, Map.put(params, "assoc", [])}
+
+      assoc when is_binary(assoc) ->
+        {field, Map.put(params, "assoc", String.split(assoc, " -> "))}
+
+      _ ->
+        {field, params}
     end
   end
 end

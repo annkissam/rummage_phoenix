@@ -21,12 +21,20 @@ defmodule Rummage.Phoenix.View do
       alias Rummage.Phoenix.{PaginateView, SearchView, SortView, ViewResolver}
 
       def pagination_link(conn, rummage, opts \\ []) do
-        PaginateView.pagination_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+        PaginateView.pagination_link(
+          conn,
+          rummage,
+          opts ++ [struct: struct(), helpers: helpers()]
+        )
       end
 
       # TODO: This doesn't scale well.
       def pagination_with_all_link(conn, rummage, opts \\ []) do
-        PaginateView.pagination_with_all_link(conn, rummage, opts ++ [struct: struct(), helpers: helpers()])
+        PaginateView.pagination_with_all_link(
+          conn,
+          rummage,
+          opts ++ [struct: struct(), helpers: helpers()]
+        )
       end
 
       def sort_link(conn, rummage, field) do
@@ -42,37 +50,52 @@ defmodule Rummage.Phoenix.View do
       end
 
       def sort_link(conn, rummage, field, name, opts) do
-        SortView.sort_link(conn, rummage, field, name, opts ++ [struct: struct(), helpers: helpers()])
+        SortView.sort_link(
+          conn,
+          rummage,
+          field,
+          name,
+          opts ++ [struct: struct(), helpers: helpers()]
+        )
       end
 
       def search_form(conn, rummage, link_params, opts \\ []) do
-        SearchView.search_form(conn, rummage, link_params, opts ++ [struct: struct(), helpers: helpers()])
+        SearchView.search_form(
+          conn,
+          rummage,
+          link_params,
+          opts ++ [struct: struct(), helpers: helpers()]
+        )
       end
 
       defp helpers do
-        helpers = unquote(opts[:helpers]) ||
-          Rummage.Phoenix.default_helpers ||
-          ViewResolver.make_helpers_name_from_topmost_namespace(__MODULE__)
+        helpers =
+          unquote(opts[:helpers]) ||
+            Rummage.Phoenix.default_helpers() ||
+            ViewResolver.make_helpers_name_from_topmost_namespace(__MODULE__)
 
-        unless Code.ensure_compiled?(helpers) do
-          raise """
-          #{helpers} is undefined, please provide an explicit router to the View with:
-          `use Rummage.Phoenix.View, helpers: MyApp.Web.Router.Helpers`"
+        case Code.ensure_compiled(helpers) do
+          {:module, module} ->
+            module
 
-          or through a config:
+          {:error, _} ->
+            raise """
+            #{helpers} is undefined, please provide an explicit router to the View with:
+            `use Rummage.Phoenix.View, helpers: MyApp.Web.Router.Helpers`"
 
-          config :rummage_phoenix, Rummage.Phoenix, [
-            default_helpers: MyApp.Web.Router.Helpers,
-          ]
-          """
+            or through a config:
+
+            config :rummage_phoenix, Rummage.Phoenix, [
+              default_helpers: MyApp.Web.Router.Helpers,
+            ]
+            """
         end
-
-        helpers
       end
 
       defp struct do
-        struct = unquote(opts[:struct]) ||
-          ViewResolver.make_struct_name_from_bottommost_namespace(__MODULE__)
+        struct =
+          unquote(opts[:struct]) ||
+            ViewResolver.make_struct_name_from_bottommost_namespace(__MODULE__)
 
         helpers = helpers()
 

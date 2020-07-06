@@ -67,15 +67,26 @@ defmodule Rummage.Phoenix.Plug do
   defp rummage_params(params, hooks) do
     case Map.get(params, "rummage") do
       nil ->
-        Map.put(params, "rummage",
+        Map.put(
+          params,
+          "rummage",
           Enum.map(hooks, &{&1, %{}})
           |> Enum.into(%{})
         )
+
       rummage ->
-        Map.put(params, "rummage",
-          Enum.map(hooks, &{&1,
-            apply(String.to_atom("Elixir.Rummage.Phoenix.#{String.capitalize(&1)}Controller"),
-              :rummage, [rummage])})
+        Map.put(
+          params,
+          "rummage",
+          Enum.map(
+            hooks,
+            &{&1,
+             apply(
+               String.to_atom("Elixir.Rummage.Phoenix.#{String.capitalize(&1)}Controller"),
+               :rummage,
+               [rummage]
+             )}
+          )
           |> Enum.into(%{})
         )
     end
