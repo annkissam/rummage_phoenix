@@ -22,7 +22,7 @@ defmodule Rummage.Phoenix do
 
   ## Examples
   Returns default `per_page` set in the config
-  (`2 in `Rummage.Phoenix`'s test env):
+  (2 in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_per_page
       2
@@ -37,7 +37,7 @@ defmodule Rummage.Phoenix do
 
   ## Examples
   Returns default `helpers` set in the config
-  (`Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
+  (Rummage.Phoenix.Router.Helpers in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_helpers
       Rummage.Phoenix.Router.Helpers
@@ -52,7 +52,7 @@ defmodule Rummage.Phoenix do
 
   ## Examples
   Returns default `theme` set in the config
-  (`:bootstrap in `Rummage.Phoenix`'s test env):
+  (:bootstrap in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_theme
       :bootstrap
@@ -67,7 +67,7 @@ defmodule Rummage.Phoenix do
 
   ## Examples
   Returns default `default_max_page_links` set in the config
-  (`5 in `Rummage.Phoenix`'s test env):
+  (5 in `Rummage.Phoenix`'s test env):
       iex> alias Rummage.Phoenix
       iex> Phoenix.default_max_page_links
       5
