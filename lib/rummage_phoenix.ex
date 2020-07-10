@@ -28,7 +28,7 @@ defmodule Rummage.Phoenix do
       2
   """
   def default_per_page do
-    config(:default_per_page, Rummage.Ecto.Config.per_page)
+    config(:default_per_page, Rummage.Ecto.Config.per_page())
   end
 
   @doc """
@@ -107,7 +107,7 @@ defmodule Rummage.Phoenix do
       iex> Phoenix.resolve_system_config({:system, "some random config"}, "default")
       "default"
   """
-  @spec resolve_system_config(Tuple.t, term) :: {term}
+  @spec resolve_system_config(Tuple.t(), term) :: {term}
   def resolve_system_config({:system, var_name}, default) do
     System.get_env(var_name) || default
   end

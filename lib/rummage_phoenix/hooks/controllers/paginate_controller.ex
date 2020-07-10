@@ -53,12 +53,17 @@ defmodule Rummage.Phoenix.PaginateController do
   """
   def rummage(rummage) do
     paginate_params = Map.get(rummage, "paginate")
+
     case paginate_params do
-      s when s in ["", nil] -> %{}
+      s when s in ["", nil] ->
+        %{}
+
       s when is_binary(s) ->
         paginate_params
-        |> Poison.decode!
-      _ -> paginate_params
+        |> Poison.decode!()
+
+      _ ->
+        paginate_params
     end
   end
 end

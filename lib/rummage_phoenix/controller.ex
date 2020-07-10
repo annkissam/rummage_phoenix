@@ -39,10 +39,14 @@ defmodule Rummage.Phoenix.Controller do
   """
   defmacro __using__(opts) do
     quote do
-      plug Rummage.Phoenix.Plug, %{hooks: unquote((opts[:only] || [:search, :sort, :paginate])
-                                                    |> Enum.map(&Atom.to_string &1)),
+      plug(Rummage.Phoenix.Plug, %{
+        hooks:
+          unquote(
+            (opts[:only] || [:search, :sort, :paginate])
+            |> Enum.map(&Atom.to_string(&1))
+          ),
         actions: unquote(opts[:actions] || [:index])
-      }
+      })
     end
   end
 end

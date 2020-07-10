@@ -12,15 +12,15 @@ defmodule Rummage.Phoenix.ViewResolver do
     |> Enum.at(-1)
     |> String.split("View")
     |> Enum.at(0)
-    |> Macro.underscore
+    |> Macro.underscore()
     |> String.replace("/", "_")
-    |> String.to_atom
+    |> String.to_atom()
   end
 
   defp helpers_module(app) do
     [
       "Elixir.#{app}.Web.Router.Helpers",
-      "Elixir.#{app}.Router.Helpers",
+      "Elixir.#{app}.Router.Helpers"
     ]
     |> Enum.map(&String.to_atom/1)
     |> Enum.find(fn module ->

@@ -1,23 +1,23 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "1.2.0"
-  @url "https://github.com/aditya7iyengar/rummage_phoenix"
+  @version "2.0.0"
+  @url "https://github.com/annkissam/rummage_phoenix"
 
   def project do
     [
       app: :rummage_phoenix,
       version: @version,
-      elixir: "~> 1.3",
+      elixir: "~> 1.10",
       deps: deps(),
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
 
       # Test
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [coveralls: :test],
       aliases: aliases(),
-      elixirc_paths: elixirc_paths(Mix.env),
+      elixirc_paths: elixirc_paths(Mix.env()),
 
       # Hex
       description: description(),
@@ -25,7 +25,7 @@ defmodule Rummage.Phoenix.Mixfile do
 
       # Docs
       name: "Rumamge.Phoenix",
-      docs: docs(),
+      docs: docs()
     ]
   end
 
@@ -35,30 +35,31 @@ defmodule Rummage.Phoenix.Mixfile do
         :logger,
         :phoenix_html,
         :phoenix,
-        :rummage_ecto,
-      ],
+        :rummage_ecto
+      ]
     ]
   end
 
   def package do
-  [
-    files: ["lib", "mix.exs",  "README.md"],
-    maintainers: ["Adi Iyengar"],
-    licenses: ["MIT"],
-    links: %{"Github" => @url},
-  ]
-end
+    [
+      files: ["lib", "mix.exs", "README.md"],
+      maintainers: ["Adi Iyengar"],
+      licenses: ["MIT"],
+      links: %{"Github" => @url}
+    ]
+  end
 
   defp deps do
     [
+      {:phoenix, "~> 1.4.0 or ~> 1.5.0"},
+      {:phoenix_html, "~> 2.14"},
+      {:rummage_ecto, "~> 2.0"},
+      {:jason, "~> 1.2", only: [:dev, :test]},
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:excoveralls, "~> 0.3", only: :test},
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
-      {:phoenix, "~> 1.2.1 or ~> 1.3.0"},
-      {:phoenix_html, "~> 2.6"},
-      {:postgrex, ">= 0.0.0", only: [:test]},
-      {:rummage_ecto, "~> 1.2"},
+      {:postgrex, ">= 0.0.0", only: [:test]}
     ]
   end
 
@@ -84,19 +85,25 @@ end
         "ecto.create",
         "ecto.migrate"
       ],
-     "ecto.reset": [
+      "ecto.reset": [
         "ecto.drop",
         "ecto.setup"
       ],
-     "test": [
+      test: [
         # "ecto.drop",
         "ecto.create --quiet",
         "ecto.migrate",
         "test"
       ],
+      publish: ["hex.publish", &git_tag/1]
     ]
   end
 
+  defp git_tag(_args) do
+    System.cmd("git", ["tag", Mix.Project.config()[:version]])
+    System.cmd("git", ["push", "--tags"])
+  end
+
   defp elixirc_paths(:test), do: ["lib", "priv", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 end

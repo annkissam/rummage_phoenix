@@ -53,12 +53,17 @@ defmodule Rummage.Phoenix.SortController do
   """
   def rummage(rummage) do
     sort_params = Map.get(rummage, "sort")
+
     case sort_params do
-      s when s in ["", nil] -> %{}
+      s when s in ["", nil] ->
+        %{}
+
       s when is_binary(s) ->
         sort_params
-        |> Poison.decode!
-      _ -> sort_params
+        |> Poison.decode!()
+
+      _ ->
+        sort_params
     end
   end
 end
