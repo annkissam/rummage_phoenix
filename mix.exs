@@ -1,8 +1,8 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "1.2.0"
-  @url "https://github.com/aditya7iyengar/rummage_phoenix"
+  @version "2.0.0"
+  @url "https://github.com/annkissam/rummage_phoenix"
 
   def project do
     [
@@ -53,7 +53,7 @@ defmodule Rummage.Phoenix.Mixfile do
     [
       {:phoenix, "~> 1.4.0 or ~> 1.5.0"},
       {:phoenix_html, "~> 2.14"},
-      {:rummage_ecto, git: "https://github.com/annkissam/rummage_ecto.git", tag: "2.0.0-rc.1"},
+      {:rummage_ecto, "~> 2.0"},
       {:jason, "~> 1.2", only: [:dev, :test]},
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
@@ -94,8 +94,14 @@ defmodule Rummage.Phoenix.Mixfile do
         "ecto.create --quiet",
         "ecto.migrate",
         "test"
-      ]
+      ],
+      publish: ["hex.publish", &git_tag/1]
     ]
+  end
+
+  defp git_tag(_args) do
+    System.cmd("git", ["tag", Mix.Project.config()[:version]])
+    System.cmd("git", ["push", "--tags"])
   end
 
   defp elixirc_paths(:test), do: ["lib", "priv", "test/support"]
