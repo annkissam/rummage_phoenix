@@ -1,4 +1,5 @@
 defmodule Rummage.Phoenix.BootstrapAdapter do
+  @moduledoc false
   defmacro pagination_links(do: expression) do
     quote do
       Phoenix.HTML.Tag.content_tag :nav, "aria-lablel": "..." do

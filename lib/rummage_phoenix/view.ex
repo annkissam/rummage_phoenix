@@ -28,7 +28,7 @@ defmodule Rummage.Phoenix.View do
         )
       end
 
-      # TODO: This doesn't scale well.
+      # This doesn't scale well.
       def pagination_with_all_link(conn, rummage, opts \\ []) do
         PaginateView.pagination_with_all_link(
           conn,

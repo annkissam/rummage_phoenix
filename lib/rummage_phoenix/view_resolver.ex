@@ -1,4 +1,5 @@
 defmodule Rummage.Phoenix.ViewResolver do
+  @moduledoc false
   def make_helpers_name_from_topmost_namespace(view_module) do
     "#{view_module}"
     |> String.split(".")
