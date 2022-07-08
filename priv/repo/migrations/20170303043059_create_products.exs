@@ -7,7 +7,7 @@ defmodule Rummage.Phoeix.Repo.Migrations.CreateProducts do
       add :price, :float
       add :category_id, references(:categories)
 
-      timestamps
+      timestamps()
     end
   end
 end

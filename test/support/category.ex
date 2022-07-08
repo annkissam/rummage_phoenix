@@ -1,4 +1,5 @@
 defmodule Rummage.Ecto.Category do
+  @moduledoc false
   use Ecto.Schema
 
   schema "categories" do

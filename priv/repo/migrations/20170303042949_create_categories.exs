@@ -5,7 +5,7 @@ defmodule Rummage.Phoenix.Repo.Migrations.CreateCategories do
     create table(:categories) do
       add :category_name, :string
 
-      timestamps
+      timestamps()
     end
   end
 end

@@ -1,14 +1,14 @@
 defmodule Rummage.Phoenix.Mixfile do
   use Mix.Project
 
-  @version "2.0.0"
+  @version "2.1.0"
   @url "https://github.com/annkissam/rummage_phoenix"
 
   def project do
     [
       app: :rummage_phoenix,
       version: @version,
-      elixir: "~> 1.10",
+      elixir: "~> 1.13",
       deps: deps(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -51,14 +51,13 @@ defmodule Rummage.Phoenix.Mixfile do
 
   defp deps do
     [
-      {:phoenix, "~> 1.4.0 or ~> 1.5.0"},
-      {:phoenix_html, "~> 2.14"},
-      {:rummage_ecto, "~> 2.0"},
-      {:jason, "~> 1.2", only: [:dev, :test]},
-      {:credo, "~> 0.5", only: [:dev, :test]},
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.3", only: :test},
-      {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
+      {:phoenix, "~> 1.6"},
+      {:phoenix_html, "~> 3.2"},
+      {:rummage_ecto, github: "annkissam/rummage_ecto"},
+      {:credo, "~> 1.6", only: [:dev, :test]},
+      {:ex_doc, "~> 0.28", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.14", only: :test},
+      {:inch_ex, github: "rrrene/inch_ex", only: [:dev, :test, :docs], runtime: false},
       {:postgrex, ">= 0.0.0", only: [:test]}
     ]
   end
