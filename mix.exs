@@ -53,9 +53,7 @@ defmodule Rummage.Phoenix.Mixfile do
     [
       {:phoenix, "~> 1.6"},
       {:phoenix_html, "~> 3.2"},
-      # TODO: use annkissam github after merge forks
-      # {:rummage_ecto, github: "annkissam/rummage_ecto"},
-      {:rummage_ecto, github: "iv-3an-ev/rummage_ecto"},
+      {:rummage_ecto, github: "annkissam/rummage_ecto"},
       {:credo, "~> 1.6", only: [:dev, :test]},
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
       {:excoveralls, "~> 0.14", only: :test},
